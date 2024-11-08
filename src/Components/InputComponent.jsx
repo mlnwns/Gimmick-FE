@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   placeholder: {
     color: '#808080',
     fontSize: 12,
-  }
+  },
 });
 
 export default InputComponent;

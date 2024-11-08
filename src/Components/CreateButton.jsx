@@ -8,10 +8,9 @@ import {
 } from 'react-native';
 
 const CreateButton = ({text, icon, style}) => {
-
-    const onPress =() =>{
-        // 생성 함수 구현
-    };
+  const onPress = () => {
+    // 생성 함수 구현
+  };
 
   return (
     <View style={[styles.container, style]}>
@@ -25,26 +24,25 @@ const CreateButton = ({text, icon, style}) => {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     width: 130,
     height: 100,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "gray",
+    borderColor: 'gray',
   },
 
   button: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-    height: "100%",
-  }
-  ,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+  },
   text: {
     marginTop: 5,
     fontSize: 15,
-    textAlign: "center",
+    textAlign: 'center',
   },
 });
 

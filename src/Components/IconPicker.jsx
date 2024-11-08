@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 
 const IconPicker = () => {
   const [icon, setIcon] = useState('🌮'); // 기본 이모티콘 설정
 
   // 이모티콘 선택 함수
-  const selectIcon = (icon) => {
+  const selectIcon = icon => {
     setIcon('🌮');
   };
 
@@ -56,9 +56,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth:1,
-    borderColor: "#B9B9B9",
-},
+    borderWidth: 1,
+    borderColor: '#B9B9B9',
+  },
 
   plusText: {
     fontSize: 15,

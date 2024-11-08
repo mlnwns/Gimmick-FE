@@ -15,7 +15,7 @@ const CreateSelectModal = () => {
       style={styles.modal}>
       <View style={styles.modalView}>
         <View style={styles.title}>
-            <CloseButton style={styles.closeButton}/>
+          <CloseButton style={styles.closeButton} />
           <Text style={styles.text}>새로 만들기</Text>
         </View>
         <View style={styles.buttons}>
@@ -45,10 +45,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   title: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     borderBottomWidth: 1,
-    borderColor: "gray",
+    borderColor: 'gray',
     paddingVertical: 15,
   },
   text: {
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     fontWeight: 500,
   },
   closeButton: {
-    position:"absolute",
+    position: 'absolute',
     left: -10,
   },
   buttons: {

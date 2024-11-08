@@ -17,24 +17,21 @@ const CloseButton = ({style}) => {
   return (
     <View style={[styles.container, style]}>
       <TouchableOpacity style={styles.button}>
-      <Icon name="close" size={18} color="gray"/>
+        <Icon name="close" size={18} color="gray" />
       </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-
-  },
+  container: {},
 
   button: {
     height: 30,
     paddingHorizontal: 30,
-    alignItems: "left",
-    justifyContent:"center",
+    alignItems: 'left',
+    justifyContent: 'center',
   },
-  
 });
 
 export default CloseButton;

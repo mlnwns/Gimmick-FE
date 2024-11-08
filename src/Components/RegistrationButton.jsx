@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 
-const RegistrationButton = ({ style }) => {
+const RegistrationButton = ({style}) => {
   const registration = () => {
     //등록함수 구현
   };
@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
     // flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    
   },
 
   button: {
@@ -35,12 +34,12 @@ const styles = StyleSheet.create({
     height: 27,
     paddingHorizontal: 25,
     borderRadius: 20,
-    alignItems: "center",
-    justifyContent:"center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  
+
   buttonText: {
-    color: '#fff', 
+    color: '#fff',
     fontSize: 13,
     fontWeight: '800',
   },
