@@ -9,7 +9,7 @@ function App(): React.JSX.Element {
     <View style={styles.container}>
       <ForderCreateModal />
       <CreateSelectModal />
-      <Header />
+      <Header type="main" />
     </View>
   );
 }
