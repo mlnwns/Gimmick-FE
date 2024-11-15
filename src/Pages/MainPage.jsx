@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import React, {useState} from 'react';
-import CountdownTimer from '../Components/CountdownTimer';
-import CountdownFolder from '../Components/\bCountdownFolder';
+import CountdownTimer from '../components/CountdownTimer';
+import CountdownFolder from '../components/CountdownFolder';
 import Icon from 'react-native-vector-icons/AntDesign';
-import Header from '../Components/Header';
+import Header from '../components/Header';
 
 const MainPage = () => {
   return (

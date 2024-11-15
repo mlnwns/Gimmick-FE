@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
-import {Pressable, StyleSheet, View, Modal} from 'react-native';
-import ColorPicker from '../Components/ColorPicker';
-import RegistrationButton from '../Components/RegistrationButton';
-import InputComponent from '../Components/InputComponent';
-import IconPicker from '../Components/IconPicker';
-import CloseButton from '../Components/CloseButton';
+import styled from 'styled-components/native';
+import ColorPicker from '../components/ColorPicker';
+import RegistrationButton from '../components/RegistrationButton';
+import InputComponent from '../components/InputComponent';
+import IconPicker from '../components/IconPicker';
+import CloseButton from '../components/CloseButton';
+import {Modal} from 'react-native';
 
 const ForderCreateModal = () => {
   const [isModalVisible, setIsModalVisible] = useState(true);
@@ -19,59 +20,55 @@ const ForderCreateModal = () => {
 
   return (
     <Modal animationType="slide" visible={isModalVisible} transparent={true}>
-      <View style={styles.container}>
-        <View style={styles.modalView}>
-          <CloseButton style={styles.exitButton} />
+      <Container>
+        <ModalView>
+          <StyledCloseButton />
           <IconPicker />
-          <InputComponent style={styles.inputComponent} />
-          <View style={styles.registrationContainer}>
+          <StyledInputComponent />
+          <RegistrationContainer>
             <ColorPicker />
-            <RegistrationButton style={styles.registrationButton} />
-          </View>
-        </View>
-      </View>
+            <StyledRegistrationButton />
+          </RegistrationContainer>
+        </ModalView>
+      </Container>
     </Modal>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
-    // backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
+const Container = styled.View`
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+`;
 
-  modalView: {
-    borderRadius: 10,
-    width: '80%',
-    padding: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    top: '-8%',
-    backgroundColor: 'white',
-  },
+const ModalView = styled.View`
+  border-radius: 10px;
+  width: 80%;
+  padding: 30px;
+  justify-content: center;
+  align-items: center;
+  top: -8%;
+  background-color: white;
+`;
 
-  inputComponent: {
-    marginVertical: 20,
-  },
+const StyledInputComponent = styled(InputComponent)`
+  margin: 20px 0;
+`;
 
-  registrationContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
+const RegistrationContainer = styled.View`
+  flex-direction: row;
+`;
 
-  registrationButton: {
-    marginLeft: 15,
-  },
+const StyledRegistrationButton = styled(RegistrationButton)`
+  margin-left: 15px;
+`;
 
-  exitButton: {
-    position: 'absolute',
-    top: 0,
-    right: -20,
-  },
-});
+const StyledCloseButton = styled(CloseButton)`
+  position: absolute;
+  top: 0;
+  right: -20px;
+`;
 
 export default ForderCreateModal;
