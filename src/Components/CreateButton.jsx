@@ -1,11 +1,5 @@
-import React, {useState} from 'react';
-import {
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-} from 'react-native';
+import React from 'react';
+import styled from 'styled-components/native';
 
 const CreateButton = ({text, icon, style}) => {
   const onPress = () => {
@@ -13,37 +7,36 @@ const CreateButton = ({text, icon, style}) => {
   };
 
   return (
-    <View style={[styles.container, style]}>
-      <TouchableOpacity style={styles.button} onPress={onPress}>
+    <Container style={style}>
+      <Button onPress={onPress}>
         {icon}
-        <Text style={styles.text}>{text}</Text>
-      </TouchableOpacity>
-    </View>
+        <ButtonText>{text}</ButtonText>
+      </Button>
+    </Container>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 130,
-    height: 100,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: 'gray',
-  },
+const Container = styled.View`
+  justify-content: center;
+  align-items: center;
+  width: 130px;
+  height: 100px;
+  border-radius: 10px;
+  border-width: 1px;
+  border-color: gray;
+`;
 
-  button: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    height: '100%',
-  },
-  text: {
-    marginTop: 5,
-    fontSize: 15,
-    textAlign: 'center',
-  },
-});
+const Button = styled.TouchableOpacity`
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+`;
+
+const ButtonText = styled.Text`
+  margin-top: 5px;
+  font-size: 15px;
+  text-align: center;
+`;
 
 export default CreateButton;

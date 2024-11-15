@@ -1,48 +1,38 @@
-import React, {useEffect, useState} from 'react';
-import {
-  Modal,
-  Pressable,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import React from 'react';
+import styled from 'styled-components/native';
 
 const RegistrationButton = ({style}) => {
   const registration = () => {
-    //등록함수 구현
+    // 등록 함수 구현
   };
 
   return (
-    <View style={[styles.container, style]}>
-      <TouchableOpacity style={styles.button} onPress={registration}>
-        <Text style={styles.buttonText}>등록</Text>
-      </TouchableOpacity>
-    </View>
+    <Container style={style}>
+      <Button onPress={registration}>
+        <ButtonText>등록</ButtonText>
+      </Button>
+    </Container>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    // flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+const Container = styled.View`
+  justify-content: center;
+  align-items: center;
+`;
 
-  button: {
-    backgroundColor: '#FFC15B',
-    height: 27,
-    paddingHorizontal: 25,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+const Button = styled.TouchableOpacity`
+  background-color: #ffc15b;
+  height: 27px;
+  padding: 0 25px;
+  border-radius: 20px;
+  justify-content: center;
+  align-items: center;
+`;
 
-  buttonText: {
-    color: '#fff',
-    fontSize: 13,
-    fontWeight: '800',
-  },
-});
+const ButtonText = styled.Text`
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+`;
 
 export default RegistrationButton;

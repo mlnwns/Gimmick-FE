@@ -1,37 +1,28 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {
-  Modal,
-  Pressable,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import styled from 'styled-components/native';
 
 const CloseButton = ({style}) => {
   const close = () => {
-    //등록함수 구현
+    // 등록 함수 구현
   };
 
   return (
-    <View style={[styles.container, style]}>
-      <TouchableOpacity style={styles.button}>
+    <Container style={style}>
+      <Button onPress={close}>
         <Icon name="close" size={18} color="gray" />
-      </TouchableOpacity>
-    </View>
+      </Button>
+    </Container>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {},
+const Container = styled.View``;
 
-  button: {
-    height: 30,
-    paddingHorizontal: 30,
-    alignItems: 'left',
-    justifyContent: 'center',
-  },
-});
+const Button = styled.TouchableOpacity`
+  height: 30px;
+  padding: 0 30px;
+  justify-content: center;
+  align-items: flex-start;
+`;
 
 export default CloseButton;

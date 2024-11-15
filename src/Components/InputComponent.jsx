@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {TextInput, StyleSheet, Text, View} from 'react-native';
+import styled from 'styled-components/native';
 
 const InputComponent = ({style}) => {
   const [text, setText] = useState('');
@@ -9,39 +9,32 @@ const InputComponent = ({style}) => {
   };
 
   return (
-    <View style={[styles.container, style]}>
-      <TextInput style={styles.input} value={text} onChange={onChangeText}>
-        {text === '' && (
-          <Text style={styles.placeholder}>폴더명을 입력해주세요.</Text>
-        )}
-      </TextInput>
-    </View>
+    <Container style={style}>
+      <Input
+        value={text}
+        onChangeText={onChangeText}
+        placeholder="폴더명을 입력해주세요."
+        placeholderTextColor="#808080"
+      />
+    </Container>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    // backgroundColor:"gray",
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+const Container = styled.View`
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+`;
 
-  input: {
-    height: 36,
-    width: '100%',
-    borderRadius: 10,
-    borderColor: '#808080',
-    textAlign: 'left',
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    alignItems: 'left',
-  },
-
-  placeholder: {
-    color: '#808080',
-    fontSize: 12,
-  },
-});
+const Input = styled.TextInput`
+  height: 36px;
+  width: 100%;
+  border-radius: 10px;
+  border-color: #808080;
+  border-width: 1px;
+  text-align: left;
+  padding: 0 10px;
+  font-size: 12px;
+`;
 
 export default InputComponent;

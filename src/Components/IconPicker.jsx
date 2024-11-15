@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import styled from 'styled-components/native';
 
 const IconPicker = () => {
   const [icon, setIcon] = useState('🌮'); // 기본 이모티콘 설정
@@ -10,66 +10,57 @@ const IconPicker = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <Container>
       {/* 선택된 이모티콘을 표시 */}
-      <View style={styles.iconContainer}>
-        <Text style={styles.iconText}>{icon}</Text>
-        <View style={styles.plusIcon}>
-          <Text style={styles.plusText}>+</Text>
-        </View>
-      </View>
-    </View>
+      <IconContainer>
+        <IconText>{icon}</IconText>
+        <PlusIcon>
+          <PlusText>+</PlusText>
+        </PlusIcon>
+      </IconContainer>
+    </Container>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    // padding: 20,
-  },
+const Container = styled.View`
+  align-items: center;
+`;
 
-  iconContainer: {
-    position: 'relative',
-    width: 45,
-    height: 45,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f0f0f0',
-    borderRadius: 50,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    elevation: 5,
-  },
+const IconContainer = styled.View`
+  position: relative;
+  width: 45px;
+  height: 45px;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+  border-radius: 50px;
+  shadow-color: #000;
+  shadow-opacity: 0.1;
+  shadow-radius: 10px;
+  elevation: 5;
+`;
 
-  iconText: {
-    fontSize: 35,
-  },
+const IconText = styled.Text`
+  font-size: 35px;
+`;
 
-  plusIcon: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    width: 20,
-    height: 20,
-    borderRadius: 12,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#B9B9B9',
-  },
+const PlusIcon = styled.View`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 12px;
+  background-color: white;
+  justify-content: center;
+  align-items: center;
+  border-width: 1px;
+  border-color: #b9b9b9;
+`;
 
-  plusText: {
-    fontSize: 15,
-    // fontWeight: 'bold',/
-    color: '#888',
-  },
-
-  icon: {
-    fontSize: 30,
-    marginHorizontal: 10,
-  },
-});
+const PlusText = styled.Text`
+  font-size: 15px;
+  color: #888;
+`;
 
 export default IconPicker;
