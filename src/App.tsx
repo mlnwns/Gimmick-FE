@@ -1,9 +1,9 @@
 import React from 'react';
 import {View} from 'react-native';
-import ForderCreateModal from './Pages/FolderCreateModal';
-import CreateSelectModal from './Pages/CreateSelectModal';
-import MainPage from './Pages/MainPage';
-import IconPickerModal from './Pages/IconPickerModal';
+import ForderCreateModal from './pages/FolderCreateModal';
+import CreateSelectModal from './pages/CreateSelectModal';
+import MainPage from './pages/MainPage';
+import IconPickerModal from './pages/IconPickerModal';
 
 function App(): React.JSX.Element {
   return (
