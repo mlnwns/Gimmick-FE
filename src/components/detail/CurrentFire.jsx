@@ -7,18 +7,20 @@ import styled from 'styled-components/native';
 
 const CurrentFire = () => {
   return (
-    <HeatSelectorContainer>
+    <CurrentFireContainer>
       <FireWrapper>
         <FireText weight="bold">약불</FireText>
       </FireWrapper>
-    </HeatSelectorContainer>
+    </CurrentFireContainer>
   );
 };
 
 export default CurrentFire;
 
-const HeatSelectorContainer = styled.View`
+const CurrentFireContainer = styled.View`
   align-items: center;
+  margin-top: 30px;
+  margin-bottom: 20px;
 `;
 
 const FireText = styled(CustomText)`
