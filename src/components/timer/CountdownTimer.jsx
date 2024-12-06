@@ -2,20 +2,25 @@ import styled from 'styled-components';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import Icon from 'react-native-vector-icons/Entypo';
 import CustomText from '../CustomText';
-import {Platform} from 'react-native';
+import {Platform, TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 const CountdownTimer = () => {
+  const navigation = useNavigation();
+
   return (
-    <TimerContainer>
-      <TimerHeaderWrapper>
-        <IconboxWrapper>
-          <IconView>🍔</IconView>
-        </IconboxWrapper>
-        <Icon name="chevron-right" size={scale(40)} color="#61734D" />
-      </TimerHeaderWrapper>
-      <FoodTitleText weight="semi-bold">쉬림프 타코</FoodTitleText>
-      <TimerText weight="bold">12:30</TimerText>
-    </TimerContainer>
+    <TouchableOpacity onPress={() => navigation.navigate('Detail')}>
+      <TimerContainer>
+        <TimerHeaderWrapper>
+          <IconboxWrapper>
+            <IconView>🍔</IconView>
+          </IconboxWrapper>
+          <Icon name="chevron-right" size={scale(40)} color="#61734D" />
+        </TimerHeaderWrapper>
+        <FoodTitleText weight="semi-bold">쉬림프 타코</FoodTitleText>
+        <TimerText weight="bold">12:30</TimerText>
+      </TimerContainer>
+    </TouchableOpacity>
   );
 };
 
