@@ -2,8 +2,11 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import {TouchableOpacity, Image, Text} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 const Header = ({type}) => {
+  const navigation = useNavigation();
+
   if (type === 'main') {
     return (
       <HeaderContainer>
@@ -25,7 +28,7 @@ const Header = ({type}) => {
       <HeaderContainer>
         <IconButton
           onPress={() => {
-            //TODO: 뒤로가기 버튼
+            navigation.navigate('Detail');
           }}>
           <BackButtonIcon
             source={require('../../assets/images/header/back-icon.png')}
