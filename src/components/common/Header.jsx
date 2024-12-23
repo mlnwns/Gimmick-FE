@@ -12,10 +12,7 @@ const Header = ({type}) => {
       <HeaderContainer>
         <Logo source={require('../../assets/images/header/logo.png')} />
         <IconContainer>
-          <IconButton
-            onPress={() => {
-              //TODO: 생성 버튼
-            }}>
+          <IconButton onPress={() => navigation.navigate('Create Modal')}>
             <StyledIcon
               source={require('../../assets/images/header/plus.png')}
             />
