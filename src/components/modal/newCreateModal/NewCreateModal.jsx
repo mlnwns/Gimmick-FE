@@ -26,6 +26,12 @@ const NewCreateModal = () => {
     navigation.navigate('Create Timer');
   };
 
+  const handleCreateFolder = () => {
+    setIsModalVisible(false);
+    navigation.goBack();
+    navigation.navigate('Create Folder');
+  };
+
   return (
     <CustomModal visible={isModalVisible} onClose={onPressModalClose}>
       <ModalContainer>
@@ -35,7 +41,7 @@ const NewCreateModal = () => {
         </TitletContainer>
         <ButtonsContainer>
           <CreateButton
-            onPress={() => navigation.navigate('Create Timer')}
+            onPress={handleCreateFolder}
             text="폴더 생성"
             icon={folderIcon}
           />

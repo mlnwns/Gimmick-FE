@@ -8,6 +8,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import NewCreateModal from './components/modal/newCreateModal/NewCreateModal';
 import TimerCreatePage from './pages/TimerCreatePage';
+import FolderCreatePage from './pages/FolderCreatePage';
 
 const Stack = createNativeStackNavigator();
 
@@ -36,6 +37,11 @@ function App(): React.JSX.Element {
             name="Create Timer"
             component={TimerCreateWithLayout}
             options={{title: 'Create Timer Page'}}
+          />
+          <Stack.Screen
+            name="Create Folder"
+            component={FolderCreateWithLayout}
+            options={{title: 'Create Folder Page'}}
           />
         </Stack.Group>
 
@@ -70,6 +76,12 @@ const DetailWithLayout = () => (
 const TimerCreateWithLayout = () => (
   <BaseLayout>
     <TimerCreatePage />
+  </BaseLayout>
+);
+
+const FolderCreateWithLayout = () => (
+  <BaseLayout>
+    <FolderCreatePage />
   </BaseLayout>
 );
 
