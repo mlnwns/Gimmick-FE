@@ -8,7 +8,7 @@ const CustomModal = ({visible, onClose, children}) => {
       visible={visible}
       transparent={true}
       onRequestClose={onClose}
-      animationType="none">
+      animationType="slide">
       <View
         style={{
           flex: 1,

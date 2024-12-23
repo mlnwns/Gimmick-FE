@@ -6,15 +6,18 @@ import CustomText from '../../CustomText';
 import styled from 'styled-components/native';
 import CloseButton from '../../common/CloseButton';
 import CreateButton from './CreateButton';
+import {useNavigation} from '@react-navigation/native';
 
 import folderIcon from '../../../assets/images/NewCreateModal/folderIcon.png';
 import timerIcon from '../../../assets/images/NewCreateModal/timerIcon.png';
 
 const NewCreateModal = () => {
   const [isModalVisible, setIsModalVisible] = useState(true);
+  const navigation = useNavigation();
 
   const onPressModalClose = () => {
     setIsModalVisible(false);
+    navigation.goBack();
   };
 
   return (
@@ -22,11 +25,19 @@ const NewCreateModal = () => {
       <ModalContainer>
         <TitletContainer>
           <TitleText weight="semi-bold">새로 만들기</TitleText>
-          <StyledCloseButton />
+          <StyledCloseButton onClose={onPressModalClose} />
         </TitletContainer>
         <ButtonsContainer>
-          <CreateButton text="폴더 생성" icon={folderIcon} />
-          <CreateButton text="타이머 생성" icon={timerIcon} />
+          <CreateButton
+            onPress={() => navigation.navigate('Detail')}
+            text="폴더 생성"
+            icon={folderIcon}
+          />
+          <CreateButton
+            onPress={() => navigation.navigate('Detail')}
+            text="타이머 생성"
+            icon={timerIcon}
+          />
         </ButtonsContainer>
       </ModalContainer>
     </CustomModal>
