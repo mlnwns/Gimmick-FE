@@ -7,6 +7,7 @@ import {Platform} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import NewCreateModal from './components/modal/newCreateModal/NewCreateModal';
+import TimerCreatePage from './pages/TimerCreatePage';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +31,11 @@ function App(): React.JSX.Element {
             name="Detail"
             component={DetailWithLayout}
             options={{title: 'Detail Page'}}
+          />
+          <Stack.Screen
+            name="Create Timer"
+            component={TimerCreateWithLayout}
+            options={{title: 'Create Timer Page'}}
           />
         </Stack.Group>
 
@@ -58,6 +64,12 @@ const MainWithLayout = () => (
 const DetailWithLayout = () => (
   <BaseLayout>
     <DetailPage />
+  </BaseLayout>
+);
+
+const TimerCreateWithLayout = () => (
+  <BaseLayout>
+    <TimerCreatePage />
   </BaseLayout>
 );
 

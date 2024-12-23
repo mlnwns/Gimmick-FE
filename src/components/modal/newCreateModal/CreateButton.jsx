@@ -3,11 +3,7 @@ import {Image} from 'react-native';
 import {scale} from 'react-native-size-matters';
 import CustomText from '../../CustomText';
 
-const CreateButton = ({text, icon, style}) => {
-  const onPress = () => {
-    // 생성 함수 구현
-  };
-
+const CreateButton = ({text, icon, style, onPress}) => {
   return (
     <Container style={style}>
       <Button onPress={onPress}>
