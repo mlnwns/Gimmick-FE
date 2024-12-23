@@ -23,10 +23,7 @@ const Header = ({type}) => {
   } else if (type === 'detail') {
     return (
       <HeaderContainer>
-        <IconButton
-          onPress={() => {
-            navigation.navigate('Detail');
-          }}>
+        <IconButton onPress={() => navigation.goBack()}>
           <BackButtonIcon
             source={require('../../assets/images/header/back-icon.png')}
           />
