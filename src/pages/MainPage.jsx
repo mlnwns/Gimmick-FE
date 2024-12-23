@@ -7,7 +7,7 @@ import CountdownTimer from '../components/timer/CountdownTimer';
 import CountdownFolder from '../components/timer/CountdownFolder';
 
 const MainPage = () => {
-  const timers = Array(30).fill(null);
+  const timers = Array(6).fill(null);
   const folders = Array(3).fill(null);
 
   return (
