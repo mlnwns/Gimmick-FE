@@ -16,9 +16,11 @@ const TimerCreatePage = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedIcon, setSelectedIcon] = useState('🌮');
   const [timerName, setTimerName] = useState('');
+  const [id, setId] = useState(0);
   const [timerColor, setTimerColor] = useState('#f7e485');
-  const [fireData, setFireData] = useState('약불');
-  const [memoData, setMemoData] = useState('');
+  const [detailTimers, setDetailTimers] = useState([
+    {id: 0, fireData: '약불', memoData: ''},
+  ]);
 
   const onPressModalOpen = () => {
     setIsModalVisible(true);
@@ -33,19 +35,13 @@ const TimerCreatePage = () => {
     setIsModalVisible(false);
   };
 
-  const handleFireChange = newFireData => {
-    setFireData(newFireData);
+  const addDetailTimer = id => {
+    setId(id + 1);
+    setDetailTimers([
+      ...detailTimers,
+      {id: id + 1, fireData: '약불', memoData: ''},
+    ]);
   };
-
-  const handleMemoChange = newMemoData => {
-    setMemoData(newMemoData);
-  };
-
-  console.log(timerName);
-  console.log(timerColor);
-  console.log(selectedIcon);
-  console.log(fireData);
-  console.log(memoData);
 
   return (
     <TimerCreateContainer
@@ -60,15 +56,37 @@ const TimerCreatePage = () => {
         <TimerCreateText weight="semi-bold">타이머 색상</TimerCreateText>
         <ColorPicker color={timerColor} onChangeColor={setTimerColor} />
       </InsertContainer>
-      <DetailTimer
-        fireData={fireData}
-        memoData={memoData}
-        onFireChange={handleFireChange}
-        onMemoChange={handleMemoChange}
-      />
+
+      {detailTimers.map((timer, index) => (
+        <DetailTimer
+          key={timer.id}
+          fireData={timer.fireData}
+          memoData={timer.memoData}
+          onDelete={index => {
+            const newDetailTimers = detailTimers.filter(
+              detailTimer => detailTimer.id !== timer.id,
+            );
+            setDetailTimers(newDetailTimers);
+          }}
+          onFireChange={newFireData => {
+            const newDetailTimers = [...detailTimers];
+            newDetailTimers[index].fireData = newFireData;
+            setDetailTimers(newDetailTimers);
+          }}
+          onMemoChange={newMemoData => {
+            const newDetailTimers = [...detailTimers];
+            newDetailTimers[index].memoData = newMemoData;
+            setDetailTimers(newDetailTimers);
+          }}
+        />
+      ))}
 
       <PlusButtonWrapper>
-        <PlusButton />
+        <PlusButton
+          onPress={() => {
+            addDetailTimer(id);
+          }}
+        />
       </PlusButtonWrapper>
       <TotalTimerContainer>
         <TotalTimer />
@@ -77,7 +95,7 @@ const TimerCreatePage = () => {
       {isModalVisible && (
         <IconPickerModal
           onSelectIcon={handleIconSelect}
-          onClose={handleModalClose}
+          onClose={() => handleModalClose}
         />
       )}
     </TimerCreateContainer>
