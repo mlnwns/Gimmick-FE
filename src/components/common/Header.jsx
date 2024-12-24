@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
+import {scale} from 'react-native-size-matters';
 import {TouchableOpacity, Image, Text} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import CustomText from '../CustomText';
 
 const Header = ({type, title}) => {
   const navigation = useNavigation();
@@ -28,7 +29,7 @@ const Header = ({type, title}) => {
             source={require('../../assets/images/header/back-icon.png')}
           />
         </IconButton>
-        <TitleText>{title}</TitleText>
+        <TitleText weight="bold">{title}</TitleText>
         <RightText>편집</RightText>
       </HeaderContainer>
     );
@@ -52,40 +53,41 @@ export default Header;
 const HeaderContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  padding: ${moderateScale(7)}px;
+  padding-top: ${scale(15)}px;
+  margin-bottom: ${scale(25)}px;
 `;
 
 const Logo = styled.Image`
   width: ${scale(90)}px;
-  height: ${verticalScale(30)}px;
+  height: ${scale(30)}px;
   object-fit: contain;
 `;
 
 const IconContainer = styled.View`
   flex-direction: row;
-  margin-top: ${verticalScale(3)}px;
+  margin-top: ${scale(3)}px;
 `;
 
 const IconButton = styled(TouchableOpacity)`
-  margin-left: ${props => (props.applyMargin ? moderateScale(14) : 0)}px;
+  margin-left: ${props => (props.applyMargin ? scale(14) : 0)}px;
 `;
 
 const StyledIcon = styled(Image)`
-  width: ${moderateScale(24)}px;
-  height: ${moderateScale(24)}px;
+  width: ${scale(24)}px;
+  height: ${scale(24)}px;
 `;
 
 const BackButtonIcon = styled(StyledIcon)`
   margin-right: auto;
 `;
 
-const TitleText = styled(Text)`
-  font-size: ${moderateScale(20)}px;
+const TitleText = styled(CustomText)`
+  font-size: ${scale(20)}px;
   font-weight: bold;
 `;
 
 const RightText = styled(Text)`
-  font-size: ${moderateScale(15)}px;
-  margin-top: ${moderateScale(5)}px;
+  font-size: ${scale(15)}px;
+  margin-top: ${scale(5)}px;
   color: #777777;
 `;
