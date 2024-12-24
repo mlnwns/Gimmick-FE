@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
+import {scale} from 'react-native-size-matters';
 import CustomText from '../CustomText';
 import {Platform} from 'react-native';
 
@@ -29,7 +29,7 @@ const TopLeftSectionView = styled.View`
   width: ${scale(70)}px;
   height: ${scale(140)}px;
   background-color: #ffd5d5;
-  border-radius: ${moderateScale(15)}px;
+  border-radius: ${scale(15)}px;
   bottom: 0;
   margin-left: ${scale(10)}px;
 `;
@@ -39,7 +39,7 @@ const TopRightSectionView = styled.View`
   width: ${scale(119)}px;
   height: ${scale(131.5)}px;
   background-color: #ffd5d5;
-  border-radius: ${moderateScale(15)}px;
+  border-radius: ${scale(15)}px;
   bottom: 0;
   margin-left: ${scale(12)}px;
 `;
@@ -50,7 +50,7 @@ const BottomSectionWrapper = styled.View`
   width: ${scale(140)}px;
   height: ${scale(117.5)}px;
   background-color: #fcc4c4;
-  border-radius: ${moderateScale(15)}px;
+  border-radius: ${scale(15)}px;
   bottom: 0;
 `;
 
@@ -58,7 +58,7 @@ const IconboxWrapper = styled.View`
   width: ${scale(40)}px;
   height: ${scale(40)}px;
   background-color: #ffffff;
-  border-radius: ${moderateScale(13)}px;
+  border-radius: ${scale(13)}px;
   opacity: 0.7;
   justify-content: center;
   align-items: center;
@@ -71,5 +71,5 @@ const IconView = styled(CustomText)`
 const FoodTitleText = styled(CustomText)`
   padding-top: ${Platform.select({ios: scale(23), android: scale(21)})}px;
   opacity: 0.6;
-  font-size: ${moderateScale(17)}px;
+  font-size: ${scale(17)}px;
 `;

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import React from 'react';
-import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
+import {scale} from 'react-native-size-matters';
 import {ScrollView} from 'react-native';
 import Header from '../components/common/Header';
 import CountdownTimer from '../components/timer/CountdownTimer';
@@ -41,10 +41,11 @@ const MainContainer = styled.View`
 `;
 
 const HeaderWrapper = styled.View`
-  flex: 1;
+  flex: 0.8;
 `;
 
 const CountdownTimerWrapper = styled.View`
+  margin-top: ${scale(20)}px;
   flex: 10;
 `;
 
@@ -53,6 +54,7 @@ const TimersAndFoldersContainer = styled.View`
   gap: ${scale(22)}px;
   flex-wrap: wrap;
   justify-content: flex-start;
+  padding-top: ${scale(20)}px;
 `;
 
 const CreateCountdownTimerBtn = styled.View`

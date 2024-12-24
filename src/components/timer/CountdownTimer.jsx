@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
+import {scale} from 'react-native-size-matters';
 import Icon from 'react-native-vector-icons/Entypo';
 import CustomText from '../CustomText';
 import {Platform, TouchableOpacity} from 'react-native';
