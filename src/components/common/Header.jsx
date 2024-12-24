@@ -41,7 +41,7 @@ const Header = ({type, title}) => {
             source={require('../../assets/images/header/back-icon.png')}
           />
         </IconButton>
-        <TitleText>{title}</TitleText>
+        <TitleText weight="bold">{title}</TitleText>
         <RightText>완료</RightText>
       </HeaderContainer>
     );
@@ -83,7 +83,6 @@ const BackButtonIcon = styled(StyledIcon)`
 
 const TitleText = styled(CustomText)`
   font-size: ${scale(20)}px;
-  font-weight: bold;
 `;
 
 const RightText = styled(Text)`
