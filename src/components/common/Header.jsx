@@ -1,12 +1,17 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import {scale} from 'react-native-size-matters';
-import {TouchableOpacity, Image, Text} from 'react-native';
+import {TouchableOpacity, Image, Text, Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import CustomText from '../CustomText';
 
 const Header = ({type, title}) => {
   const navigation = useNavigation();
+
+  const titleWeight = Platform.select({
+    ios: 'bold',
+    android: 'medium',
+  });
 
   if (type === 'main') {
     return (
@@ -29,7 +34,7 @@ const Header = ({type, title}) => {
             source={require('../../assets/images/header/back-icon.png')}
           />
         </IconButton>
-        <TitleText weight="bold">{title}</TitleText>
+        <TitleText weight={titleWeight}>{title}</TitleText>
         <RightText>편집</RightText>
       </HeaderContainer>
     );
@@ -41,7 +46,7 @@ const Header = ({type, title}) => {
             source={require('../../assets/images/header/back-icon.png')}
           />
         </IconButton>
-        <TitleText weight="bold">{title}</TitleText>
+        <TitleText weight={titleWeight}>{title}</TitleText>
         <RightText>완료</RightText>
       </HeaderContainer>
     );
