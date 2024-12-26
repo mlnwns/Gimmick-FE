@@ -12,13 +12,11 @@ const MainPage = () => {
 
   return (
     <MainContainer>
-      <HeaderWrapper>
+      <ScrollView
+        contentContainerStyle={{flexGrow: 1}}
+        showsVerticalScrollIndicator={false}>
         <Header type="main" />
-      </HeaderWrapper>
-      <CountdownTimerWrapper>
-        <ScrollView
-          contentContainerStyle={{flexGrow: 1}}
-          showsVerticalScrollIndicator={false}>
+        <CountdownTimerWrapper>
           <TimersAndFoldersContainer>
             {timers.map((_, index) => (
               <CountdownTimer key={`timer-${index}`} />
@@ -27,8 +25,8 @@ const MainPage = () => {
               <CountdownFolder key={`folder-${index}`} />
             ))}
           </TimersAndFoldersContainer>
-        </ScrollView>
-      </CountdownTimerWrapper>
+        </CountdownTimerWrapper>
+      </ScrollView>
     </MainContainer>
   );
 };
@@ -40,13 +38,8 @@ const MainContainer = styled.View`
   height: 100%;
 `;
 
-const HeaderWrapper = styled.View`
-  flex: 0.8;
-`;
-
 const CountdownTimerWrapper = styled.View`
-  margin-top: ${scale(20)}px;
-  flex: 10;
+  margin-top: ${scale(0)}px;
 `;
 
 const TimersAndFoldersContainer = styled.View`
