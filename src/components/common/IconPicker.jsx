@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
+import {scale} from 'react-native-size-matters';
 import {TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
