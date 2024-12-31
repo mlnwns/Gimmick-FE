@@ -22,9 +22,11 @@ const IconGrid = ({onSelectIcon}) => {
 const IconComponent = ({emoji, onPress}) => {
   return (
     <IconContainer>
-      <Icon onPress={onPress}>
-        <IconText>{emoji}</IconText>
-      </Icon>
+      <TouchableWithoutFeedback onPress={onPress}>
+        <IconWrapper>
+          <IconText>{emoji}</IconText>
+        </IconWrapper>
+      </TouchableWithoutFeedback>
     </IconContainer>
   );
 };
@@ -47,7 +49,7 @@ const IconContainer = styled.View`
   align-items: center;
 `;
 
-const Icon = styled.TouchableOpacity`
+const IconWrapper = styled.View`
   width: ${scale(50)}px;
   height: ${scale(50)}px;
   border-radius: ${scale(20)}px;

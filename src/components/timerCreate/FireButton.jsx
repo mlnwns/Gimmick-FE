@@ -1,15 +1,18 @@
 import {scale} from 'react-native-size-matters';
 import styled from 'styled-components/native';
 import CustomText from '../CustomText';
+import {TouchableWithoutFeedback} from 'react-native';
 
 const FireButton = ({style, isActive, fireText, onPress}) => {
   return (
     <ButtonContainer style={style}>
-      <Button onPress={onPress} isActive={isActive}>
-        <ButtonText weight="semi-bold" isActive={isActive}>
-          {fireText}
-        </ButtonText>
-      </Button>
+      <TouchableWithoutFeedback onPress={onPress}>
+        <ButtonWrapper isActive={isActive}>
+          <ButtonText weight="semi-bold" isActive={isActive}>
+            {fireText}
+          </ButtonText>
+        </ButtonWrapper>
+      </TouchableWithoutFeedback>
     </ButtonContainer>
   );
 };
@@ -19,7 +22,7 @@ const ButtonContainer = styled.View`
   align-items: center;
 `;
 
-const Button = styled.TouchableOpacity`
+const ButtonWrapper = styled.View`
   width: ${scale(52)}px;
   height: ${scale(30)}px;
   border-radius: ${scale(7)}px;

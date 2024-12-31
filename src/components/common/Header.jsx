@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import {scale} from 'react-native-size-matters';
-import {TouchableOpacity, Image, Text, Platform} from 'react-native';
+import {TouchableWithoutFeedback, Image, Text, Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import CustomText from '../CustomText';
 
@@ -18,22 +18,27 @@ const Header = ({type, title}) => {
       <HeaderContainer>
         <Logo source={require('../../assets/images/header/logo.png')} />
         <IconContainer>
-          <IconButton onPress={() => navigation.navigate('Create Modal')}>
-            <StyledIcon
-              source={require('../../assets/images/header/plus.png')}
-            />
-          </IconButton>
+          <TouchableWithoutFeedback
+            onPress={() => navigation.navigate('Create Modal')}>
+            <IconButton>
+              <StyledIcon
+                source={require('../../assets/images/header/plus.png')}
+              />
+            </IconButton>
+          </TouchableWithoutFeedback>
         </IconContainer>
       </HeaderContainer>
     );
   } else if (type === 'detail') {
     return (
       <HeaderContainer>
-        <IconButton onPress={() => navigation.goBack()}>
-          <BackButtonIcon
-            source={require('../../assets/images/header/back-icon.png')}
-          />
-        </IconButton>
+        <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
+          <IconButton>
+            <BackButtonIcon
+              source={require('../../assets/images/header/back-icon.png')}
+            />
+          </IconButton>
+        </TouchableWithoutFeedback>
         <TitleText weight={titleWeight}>{title}</TitleText>
         <RightText>편집</RightText>
       </HeaderContainer>
@@ -41,11 +46,13 @@ const Header = ({type, title}) => {
   } else if (['timerCreate', 'folderCreate'].includes(type)) {
     return (
       <HeaderContainer>
-        <IconButton onPress={() => navigation.goBack()}>
-          <BackButtonIcon
-            source={require('../../assets/images/header/back-icon.png')}
-          />
-        </IconButton>
+        <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
+          <IconButton>
+            <BackButtonIcon
+              source={require('../../assets/images/header/back-icon.png')}
+            />
+          </IconButton>
+        </TouchableWithoutFeedback>
         <TitleText weight={titleWeight}>{title}</TitleText>
         <RightText>완료</RightText>
       </HeaderContainer>
@@ -58,6 +65,7 @@ export default Header;
 const HeaderContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   padding-top: ${scale(15)}px;
   margin-bottom: ${scale(25)}px;
 `;
@@ -73,7 +81,7 @@ const IconContainer = styled.View`
   margin-top: ${scale(3)}px;
 `;
 
-const IconButton = styled(TouchableOpacity)`
+const IconButton = styled.View`
   margin-left: ${props => (props.applyMargin ? scale(14) : 0)}px;
 `;
 

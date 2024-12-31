@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import {scale} from 'react-native-size-matters';
 import CustomText from '../CustomText';
-import {Platform, TouchableOpacity} from 'react-native';
+import {Platform, TouchableWithoutFeedback} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import useTimerStore from '../../store';
 
@@ -10,7 +10,7 @@ const CountdownTimer = () => {
   const {time} = useTimerStore(state => state);
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('Detail')}>
+    <TouchableWithoutFeedback onPress={() => navigation.navigate('Detail')}>
       <TimerContainer>
         <TimerHeaderWrapper>
           <IconboxWrapper>
@@ -26,7 +26,7 @@ const CountdownTimer = () => {
           {String(time.seconds).padStart(2, '0')}
         </TimerText>
       </TimerContainer>
-    </TouchableOpacity>
+    </TouchableWithoutFeedback>
   );
 };
 
