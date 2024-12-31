@@ -10,7 +10,7 @@ const IconPicker = ({icon, onPress}) => {
     <Container>
       <IconContainer>
         <IconText>{icon}</IconText>
-        <PlusIcon onPress={onPress}>
+        <PlusIcon onPress={onPress} activeOpacity={1}>
           <PlusText>
             <Icon name="plus" color="white" size={scale(9)} />
           </PlusText>
@@ -38,7 +38,7 @@ const IconText = styled.Text`
   font-size: ${scale(60)}px;
 `;
 
-const PlusIcon = styled(TouchableWithoutFeedback)`
+const PlusIcon = styled.TouchableOpacity`
   position: absolute;
   bottom: ${scale(5)}px;
   right: ${scale(5)}px;
