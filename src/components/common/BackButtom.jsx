@@ -9,16 +9,18 @@ const BackButtom = ({style}) => {
 
   return (
     <Container style={style}>
-      <Button onPress={back}>
-        <Icon name="chevron-back-outline" size={20} color="gray" />
-      </Button>
+      <TouchableWithoutFeedback onPress={back}>
+        <ButtonWrapper>
+          <Icon name="chevron-back-outline" size={20} color="gray" />
+        </ButtonWrapper>
+      </TouchableWithoutFeedback>
     </Container>
   );
 };
 
 const Container = styled.View``;
 
-const Button = styled.TouchableOpacity`
+const Button = styled.TouchableWithoutFeedback`
   height: ${scale(30)}px;
   justify-content: center;
   align-items: flex-start;

@@ -7,9 +7,11 @@ const RegistrationButton = ({style}) => {
 
   return (
     <Container style={style}>
-      <Button onPress={registration}>
-        <ButtonText>등록</ButtonText>
-      </Button>
+      <ButtonWrapper onPress={registration}>
+        <Button>
+          <ButtonText>등록</ButtonText>
+        </Button>
+      </ButtonWrapper>
     </Container>
   );
 };
@@ -19,7 +21,9 @@ const Container = styled.View`
   align-items: center;
 `;
 
-const Button = styled.TouchableOpacity`
+const ButtonWrapper = styled.TouchableWithoutFeedback``;
+
+const Button = styled.View`
   background-color: #ffc15b;
   height: 27px;
   padding: 0 25px;

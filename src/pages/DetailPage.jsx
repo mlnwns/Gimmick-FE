@@ -6,6 +6,7 @@ import styled from 'styled-components/native';
 import CustomText from '../components/CustomText';
 import {scale} from 'react-native-size-matters';
 import useTimerStore from '../store';
+import {TouchableWithoutFeedback} from 'react-native';
 
 const DetailPage = () => {
   const {time, isRunning, startTimer, stopTimer, resetTimer} = useTimerStore(
@@ -33,20 +34,24 @@ const DetailPage = () => {
           {String(time.seconds).padStart(2, '0')}
         </TimerDisplay>
         <ButtonContainer>
-          <Button onPress={resetTimer}>
-            <ResetButtonImage
-              source={require('../assets/images/detail/reset-icon.png')}
-            />
-          </Button>
-          <Button onPress={handleTimerToggle}>
-            <StartButtonImage
-              source={
-                isRunning
-                  ? require('../assets/images/detail/stop-icon.png') // 타이머 실행 중이면 stop-icon
-                  : require('../assets/images/detail/start-icon.png') // 타이머 멈춤이면 start-icon
-              }
-            />
-          </Button>
+          <TouchableWithoutFeedback onPress={resetTimer}>
+            <ButtonWrapper>
+              <ResetButtonImage
+                source={require('../assets/images/detail/reset-icon.png')}
+              />
+            </ButtonWrapper>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={handleTimerToggle}>
+            <ButtonWrapper>
+              <StartButtonImage
+                source={
+                  isRunning
+                    ? require('../assets/images/detail/stop-icon.png') // 타이머 실행 중이면 stop-icon
+                    : require('../assets/images/detail/start-icon.png') // 타이머 멈춤이면 start-icon
+                }
+              />
+            </ButtonWrapper>
+          </TouchableWithoutFeedback>
         </ButtonContainer>
       </ContentContainer>
       <SwifeContainer>
@@ -67,10 +72,11 @@ const DetailLayout = styled.View`
 `;
 
 const HeaderWrapper = styled.View``;
+
 const ContentContainer = styled.View`
   height: 90%;
   margin-top: ${scale(-50)}px;
-  align-item: center;
+  align-items: center;
   justify-content: center;
 `;
 
@@ -87,7 +93,7 @@ const ButtonContainer = styled.View`
   margin-top: ${scale(24)}px;
 `;
 
-const Button = styled.TouchableOpacity`
+const ButtonWrapper = styled.View`
   padding: ${scale(12)}px ${scale(40)}px;
   background-color: #ffc15b;
   border-radius: ${scale(12)}px;
@@ -107,16 +113,16 @@ const StartButtonImage = styled.Image`
 `;
 
 const SwifeContainer = styled.View`
-  flex-direction: row; /* 요소를 한 줄로 배치 */
-  justify-content: center; /* 수평 정렬: 가운데 */
-  align-items: center; /* 수직 정렬: 가운데 */
-  margin-top: ${scale(10)}px; /* 상단 여백 추가 */
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: ${scale(10)}px;
 `;
 
 const SwifeButtonImage = styled.Image`
   width: ${scale(20)}px;
   height: ${scale(10)}px;
-  margin-right: ${scale(10)}px; /* 텍스트와 버튼 이미지 사이 간격 */
+  margin-right: ${scale(10)}px;
 `;
 
 const SwifeText = styled(CustomText)`
