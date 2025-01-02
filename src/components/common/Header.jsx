@@ -5,7 +5,7 @@ import {TouchableWithoutFeedback, Image, Text, Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import CustomText from '../CustomText';
 
-const Header = ({type, title}) => {
+const Header = ({type, title, onPressComplete}) => {
   const navigation = useNavigation();
 
   const titleWeight = Platform.select({
@@ -54,7 +54,9 @@ const Header = ({type, title}) => {
           </IconButton>
         </TouchableWithoutFeedback>
         <TitleText weight={titleWeight}>{title}</TitleText>
-        <RightText>완료</RightText>
+        <TouchableWithoutFeedback onPress={onPressComplete}>
+          <RightText>완료</RightText>
+        </TouchableWithoutFeedback>
       </HeaderContainer>
     );
   }
