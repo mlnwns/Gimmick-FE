@@ -7,8 +7,12 @@ import CustomText from '../components/CustomText';
 import {scale} from 'react-native-size-matters';
 import useTimerStore from '../store';
 import {TouchableWithoutFeedback} from 'react-native';
+import {useRoute} from '@react-navigation/native';
 
 const DetailPage = () => {
+  const route = useRoute();
+  const {timer} = route.params || {};
+  console.log(timer);
   const {time, isRunning, startTimer, stopTimer, resetTimer} = useTimerStore(
     state => state,
   );
@@ -24,7 +28,7 @@ const DetailPage = () => {
   return (
     <DetailLayout>
       <HeaderWrapper>
-        <Header type="detail" title="고구마 삶기" />
+        <Header type="detail" title={timer.timerName} />
       </HeaderWrapper>
       <ContentContainer>
         <CircularProgress />

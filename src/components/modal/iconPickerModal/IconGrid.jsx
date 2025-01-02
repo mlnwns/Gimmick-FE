@@ -2,6 +2,7 @@ import {useState} from 'react';
 import styled from 'styled-components/native';
 import foodIconsObjectArray from '../../../assets/IconList';
 import {scale} from 'react-native-size-matters';
+import {TouchableWithoutFeedback} from 'react-native';
 
 const IconGrid = ({onSelectIcon}) => {
   return (

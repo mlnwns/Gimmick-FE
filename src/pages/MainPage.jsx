@@ -1,14 +1,38 @@
-import styled from 'styled-components';
-import React from 'react';
+import styled from 'styled-components/native';
+import React, {useState, useEffect} from 'react';
 import {scale} from 'react-native-size-matters';
 import {ScrollView} from 'react-native';
 import Header from '../components/common/Header';
 import CountdownTimer from '../components/timer/CountdownTimer';
 import CountdownFolder from '../components/timer/CountdownFolder';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useFocusEffect} from '@react-navigation/native';
 
 const MainPage = () => {
-  const timers = Array(3).fill(null);
-  const folders = Array(3).fill(null);
+  const [timers, setTimers] = useState([]);
+  const [folders, setFolders] = useState([]);
+
+  const loadData = async () => {
+    try {
+      const storedTimers = await AsyncStorage.getItem('timers');
+      if (storedTimers) {
+        setTimers(JSON.parse(storedTimers));
+      }
+
+      const storedFolders = await AsyncStorage.getItem('folders');
+      if (storedFolders) {
+        setFolders(JSON.parse(storedFolders));
+      }
+    } catch (error) {
+      console.error('Error loading data:', error);
+    }
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      loadData();
+    }, []),
+  );
 
   return (
     <MainContainer>
@@ -18,11 +42,13 @@ const MainPage = () => {
         <Header type="main" />
         <CountdownTimerWrapper>
           <TimersAndFoldersContainer>
-            {timers.map((_, index) => (
-              <CountdownTimer key={`timer-${index}`} />
+            {timers.map((timer, index) => (
+              <React.Fragment key={index}>
+                <CountdownTimer timer={timer} />
+              </React.Fragment>
             ))}
-            {folders.map((_, index) => (
-              <CountdownFolder key={`folder-${index}`} />
+            {folders.map(folder => (
+              <CountdownFolder key={folder.id} />
             ))}
           </TimersAndFoldersContainer>
         </CountdownTimerWrapper>
@@ -30,6 +56,8 @@ const MainPage = () => {
     </MainContainer>
   );
 };
+
+// ... styled components 코드는 동일 ...
 
 export default MainPage;
 
@@ -46,13 +74,4 @@ const TimersAndFoldersContainer = styled.View`
   flex-wrap: wrap;
   justify-content: flex-start;
   padding-top: ${scale(20)}px;
-`;
-
-const CreateCountdownTimerBtn = styled.View`
-  width: 100%;
-  height: 50px;
-  border-radius: 10px;
-  border: 1px dashed #3562d6;
-  justify-content: center;
-  align-items: center;
 `;

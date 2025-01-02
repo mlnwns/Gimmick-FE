@@ -11,6 +11,8 @@ import PlusButton from '../components/timerCreate/PlusButton';
 import TotalTimer from '../components/timerCreate/TotalTimer';
 import Header from '../components/common/Header';
 import IconPickerModal from '../components/modal/iconPickerModal/IconPickerModal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
 
 const TimerCreatePage = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -22,6 +24,7 @@ const TimerCreatePage = () => {
   const [detailTimers, setDetailTimers] = useState([
     {id: 0, minutes: '00', seconds: '00', fireData: '약불', memoData: ''},
   ]);
+  const navigation = useNavigation();
   const [totalMinutes, setTotalMinutes] = useState('00');
   const [totalSeconds, setTotalSeconds] = useState('00');
   useEffect(() => {
@@ -73,12 +76,50 @@ const TimerCreatePage = () => {
     ]);
   };
 
+  const saveTimerData = async () => {
+    if (!timerName.trim()) {
+      Alert.alert('저장 실패', '타이머 이름을 입력해주세요.');
+      return;
+    }
+
+    try {
+      const newTimer = {
+        id: Date.now(),
+        timerName: timerName,
+        timerColor: timerColor,
+        icon: selectedIcon,
+        detailTimers,
+      };
+
+      const storedTimers = await AsyncStorage.getItem('timers');
+      const parsedTimers = storedTimers ? JSON.parse(storedTimers) : [];
+
+      const updatedTimers = [...parsedTimers, newTimer];
+
+      await AsyncStorage.setItem('timers', JSON.stringify(updatedTimers));
+      Alert.alert('저장 완료', '타이머가 성공적으로 저장되었습니다.');
+
+      setTimerName('');
+      setTimerColor('#f7e485');
+      setSelectedIcon('🌮');
+      setDetailTimers([{id: 0, fireData: '약불', memoData: ''}]);
+      navigation.goBack();
+    } catch (error) {
+      console.error('타이머 저장 실패:', error);
+      Alert.alert('저장 실패', '타이머를 저장하는 데 실패했습니다.');
+    }
+  };
+
   return (
     <TimerCreateContainer
       contentContainerStyle={{flexGrow: 1}}
       showsVerticalScrollIndicator={false}>
       <BaseLayout>
-        <Header type="timerCreate" title="타이머 생성" />
+        <Header
+          type="timerCreate"
+          title="타이머 생성"
+          onPressComplete={saveTimerData}
+        />
         <IconPicker icon={selectedIcon} onPress={onPressModalOpen} />
         <InsertContainer>
           <TimerCreateText weight="semi-bold">타이머 이름</TimerCreateText>
