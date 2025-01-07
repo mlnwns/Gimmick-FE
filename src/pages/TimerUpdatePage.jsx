@@ -12,21 +12,29 @@ import TotalTimer from '../components/timerCreate/TotalTimer';
 import Header from '../components/common/Header';
 import IconPickerModal from '../components/modal/iconPickerModal/IconPickerModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
-const TimerCreatePage = () => {
+const TimerUpdatePage = () => {
+  const route = useRoute();
+  const {timer} = route.params || {};
+  console.log(timer);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedIcon, setSelectedIcon] = useState('🌮');
-  const [timerName, setTimerName] = useState('');
-  const [id, setId] = useState(0);
+  const [selectedIcon, setSelectedIcon] = useState(timer.icon);
+  const [timerName, setTimerName] = useState(timer.timerName);
+  const [id, setId] = useState(
+    timer.detailTimerData[timer.detailTimerData.length - 1].id,
+  );
 
-  const [timerColor, setTimerColor] = useState('#FBDF60');
-  const [detailTimers, setDetailTimers] = useState([
-    {id: 0, minutes: '00', seconds: '00', fireData: '약불', memoData: ''},
-  ]);
+  const [timerColor, setTimerColor] = useState(timer.timerColor);
+  const [detailTimers, setDetailTimers] = useState(timer.detailTimerData);
   const navigation = useNavigation();
-  const [totalMinutes, setTotalMinutes] = useState('00');
-  const [totalSeconds, setTotalSeconds] = useState('00');
+  const [totalMinutes, setTotalMinutes] = useState(
+    String(timer.totalMinutes).padStart(2, '0'),
+  );
+  const [totalSeconds, setTotalSeconds] = useState(
+    String(timer.totalSeconds).padStart(2, '0'),
+  );
+
   useEffect(() => {
     const calculateTotalTime = () => {
       let totalMinutes = 0;
@@ -76,36 +84,6 @@ const TimerCreatePage = () => {
     ]);
   };
 
-  const handleDeleteTimer = timerId => {
-    if (detailTimers.length > 1) {
-      const newDetailTimers = detailTimers.filter(
-        detailTimer => detailTimer.id !== timerId,
-      );
-      setDetailTimers(newDetailTimers);
-    } else {
-      Alert.alert('최소 1개의 타이머가 설정 되어야합니다.');
-    }
-  };
-
-  const handleTimeChange = (index, minutes, seconds) => {
-    const newDetailTimers = [...detailTimers];
-    newDetailTimers[index].minutes = minutes;
-    newDetailTimers[index].seconds = seconds;
-    setDetailTimers(newDetailTimers);
-  };
-
-  const handleFireChange = (index, newFireData) => {
-    const newDetailTimers = [...detailTimers];
-    newDetailTimers[index].fireData = newFireData;
-    setDetailTimers(newDetailTimers);
-  };
-
-  const handleMemoChange = (index, newMemoData) => {
-    const newDetailTimers = [...detailTimers];
-    newDetailTimers[index].memoData = newMemoData;
-    setDetailTimers(newDetailTimers);
-  };
-
   const saveTimerData = async () => {
     if (!timerName.trim()) {
       Alert.alert('저장 실패', '타이머 이름을 입력해주세요.');
@@ -114,7 +92,7 @@ const TimerCreatePage = () => {
 
     try {
       const newTimer = {
-        id: Date.now(),
+        id: timer.id,
         totalMinutes: totalMinutes,
         totalSeconds: totalSeconds,
         timerName: timerName,
@@ -123,18 +101,23 @@ const TimerCreatePage = () => {
         detailTimerData: detailTimers,
       };
 
+      // 데이터 수정 완료되면 확인해야 할 부분
       const storedTimers = await AsyncStorage.getItem('timers');
       const parsedTimers = storedTimers ? JSON.parse(storedTimers) : [];
 
-      const updatedTimers = [...parsedTimers, newTimer];
+      // 현재 id가 없어서인지 타이머를 수정하면 전체 타이머에 적용되는 오류가 발생하고 있음
+      const updatedTimers = parsedTimers.map(t =>
+        t.id === timer.id ? newTimer : t,
+      );
 
       await AsyncStorage.setItem('timers', JSON.stringify(updatedTimers));
       Alert.alert('저장 완료', '타이머가 성공적으로 저장되었습니다.');
 
       setTimerName('');
-      setTimerColor('#f7e485');
+      setTimerColor('#FBDF60');
       setSelectedIcon('🌮');
       setDetailTimers([{id: 0, fireData: '약불', memoData: ''}]);
+      navigation.goBack();
       navigation.goBack();
     } catch (error) {
       console.error('타이머 저장 실패:', error);
@@ -142,8 +125,42 @@ const TimerCreatePage = () => {
     }
   };
 
+  const handleTimeChange = (index, minutes, seconds) => {
+    setDetailTimers(prevTimers => {
+      const newTimers = [...prevTimers];
+      newTimers[index] = {
+        ...newTimers[index],
+        minutes,
+        seconds,
+      };
+      return newTimers;
+    });
+  };
+
+  const handleFireChange = (index, newFireData) => {
+    setDetailTimers(prevTimers => {
+      const newTimers = [...prevTimers];
+      newTimers[index] = {
+        ...newTimers[index],
+        fireData: newFireData,
+      };
+      return newTimers;
+    });
+  };
+
+  const handleMemoChange = (index, newMemoData) => {
+    setDetailTimers(prevTimers => {
+      const newTimers = [...prevTimers];
+      newTimers[index] = {
+        ...newTimers[index],
+        memoData: newMemoData,
+      };
+      return newTimers;
+    });
+  };
+
   return (
-    <TimerCreateContainer
+    <TimerUpdateContainer
       contentContainerStyle={{flexGrow: 1}}
       showsVerticalScrollIndicator={false}>
       <BaseLayout>
@@ -162,14 +179,23 @@ const TimerCreatePage = () => {
       </BaseLayout>
 
       <DetailTimerWrapper>
-        {detailTimers.map((timer, index) => (
+        {detailTimers.map((time, index) => (
           <DetailTimer
-            key={timer.id}
-            minutes={timer.minutes}
-            seconds={timer.seconds}
-            fireData={timer.fireData}
-            memoData={timer.memoData}
-            onDelete={() => handleDeleteTimer(timer.id)}
+            key={time.id}
+            minutes={String(time.minutes).padStart(2, '0')}
+            seconds={String(time.seconds).padStart(2, '0')}
+            fireData={time.fireData}
+            memoData={time.memoData}
+            onDelete={index => {
+              if (detailTimers.length > 1) {
+                const newDetailTimers = detailTimers.filter(
+                  detailTimer => detailTimer.id !== time.id,
+                );
+                setDetailTimers(newDetailTimers);
+              } else {
+                Alert.alert('최소 1개의 타이머가 설정 되어야합니다.');
+              }
+            }}
             onTimeChange={(minutes, seconds) =>
               handleTimeChange(index, minutes, seconds)
             }
@@ -198,11 +224,11 @@ const TimerCreatePage = () => {
           />
         )}
       </BaseLayout>
-    </TimerCreateContainer>
+    </TimerUpdateContainer>
   );
 };
 
-const TimerCreateContainer = styled.ScrollView`
+const TimerUpdateContainer = styled.ScrollView`
   width: 100%;
   height: 100%;
 
@@ -238,4 +264,4 @@ const TotalTimerContainer = styled.View`
   margin: ${scale(20)}px 0;
 `;
 
-export default TimerCreatePage;
+export default TimerUpdatePage;

@@ -10,7 +10,8 @@ import NewCreateModal from './components/modal/newCreateModal/NewCreateModal';
 import TimerCreatePage from './pages/TimerCreatePage';
 import FolderCreatePage from './pages/FolderCreatePage';
 import {StatusBar} from 'react-native';
-
+import TimerUpdatePage from './pages/TimerUpdatePage';
+import Refresh from './pages/Refresh';
 const Stack = createNativeStackNavigator();
 
 function App(): React.JSX.Element {
@@ -33,7 +34,7 @@ function App(): React.JSX.Element {
             <Stack.Screen
               name="Main"
               component={MainWithLayout}
-              options={{title: 'Main Page'}}
+              options={{title: 'Main Page', animation: 'none'}}
             />
             <Stack.Screen
               name="Detail"
@@ -49,6 +50,17 @@ function App(): React.JSX.Element {
               name="Create Folder"
               component={FolderCreateWithLayout}
               options={{title: 'Create Folder Page'}}
+            />
+            <Stack.Screen
+              name="Timer Update"
+              component={TimerUpdateWithLayout}
+              options={{title: 'Timer Update Page'}}
+            />
+
+            <Stack.Screen
+              name="Refresh"
+              component={Refresh}
+              options={{title: 'Refresh Page'}}
             />
           </Stack.Group>
 
@@ -82,6 +94,8 @@ const DetailWithLayout = () => (
 );
 
 const TimerCreateWithLayout = () => <TimerCreatePage />;
+
+const TimerUpdateWithLayout = () => <TimerUpdatePage />;
 
 const FolderCreateWithLayout = () => (
   <BaseLayout>
