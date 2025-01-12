@@ -1,5 +1,6 @@
 const initialMockData = [
   {
+    id: 1,
     timerName: '조림',
     icon: '🥘',
     timerColor: '#F6DBB7',
@@ -23,6 +24,7 @@ const initialMockData = [
     ],
   },
   {
+    id: 2,
     timerName: '고구마 삶기',
     icon: '🍠',
     timerColor: '#FBDF60',
@@ -46,6 +48,7 @@ const initialMockData = [
     ],
   },
   {
+    id: 3,
     timerName: '파스타 (알덴테)',
     icon: '🍝',
     timerColor: '#BAE2FF',
