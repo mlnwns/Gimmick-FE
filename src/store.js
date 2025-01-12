@@ -1,57 +1,115 @@
 import {create} from 'zustand';
-// 해당 타이머 클릭 시 해당 타이머 불러오는 코드 추가 필요
 
 const useTimerStore = create(set => ({
-  time: {minutes: 3, seconds: 4},
-  isRunning: false,
-  intervalId: null,
+  timers: {},
 
-  // 타이머 시작
-  startTimer: () => {
+  initTimer: (timerId, initialMinutes, initialSeconds) => {
+    set(state => ({
+      timers: {
+        ...state.timers,
+        [timerId]: {
+          time: {
+            minutes: parseInt(initialMinutes),
+            seconds: parseInt(initialSeconds),
+          },
+          isRunning: false,
+          intervalId: null,
+        },
+      },
+    }));
+  },
+
+  startTimer: timerId => {
     set(state => {
-      if (state.isRunning) return {}; // 이미 실행 중이면 아무 동작하지 않음
+      const timer = state.timers[timerId];
+      if (!timer || timer.isRunning) return state;
 
       const intervalId = setInterval(() => {
         set(state => {
-          const {minutes, seconds} = state.time;
+          const currentTimer = state.timers[timerId];
+          const {minutes, seconds} = currentTimer.time;
 
           if (minutes === 0 && seconds === 0) {
-            clearInterval(state.intervalId);
+            clearInterval(currentTimer.intervalId);
             return {
-              time: {minutes: 3, seconds: 4},
-              isRunning: false,
-              intervalId: null,
+              timers: {
+                ...state.timers,
+                [timerId]: {
+                  ...currentTimer,
+                  isRunning: false,
+                  intervalId: null,
+                },
+              },
             };
           }
 
-          if (seconds === 0) {
-            return {time: {minutes: minutes - 1, seconds: 59}};
-          }
+          const newTime =
+            seconds === 0
+              ? {minutes: minutes - 1, seconds: 59}
+              : {minutes, seconds: seconds - 1};
 
-          return {time: {minutes, seconds: seconds - 1}};
+          return {
+            timers: {
+              ...state.timers,
+              [timerId]: {
+                ...currentTimer,
+                time: newTime,
+              },
+            },
+          };
         });
       }, 1000);
 
-      return {isRunning: true, intervalId};
-    });
-  },
-
-  // 타이머 정지
-  stopTimer: () => {
-    set(state => {
-      clearInterval(state.intervalId);
-      return {isRunning: false, intervalId: null};
-    });
-  },
-
-  // 타이머 초기화
-  resetTimer: () => {
-    set(state => {
-      clearInterval(state.intervalId);
       return {
-        time: {minutes: 3, seconds: 4},
-        isRunning: false,
-        intervalId: null,
+        timers: {
+          ...state.timers,
+          [timerId]: {
+            ...timer,
+            isRunning: true,
+            intervalId,
+          },
+        },
+      };
+    });
+  },
+
+  stopTimer: timerId => {
+    set(state => {
+      const timer = state.timers[timerId];
+      if (timer?.intervalId) {
+        clearInterval(timer.intervalId);
+      }
+      return {
+        timers: {
+          ...state.timers,
+          [timerId]: {
+            ...timer,
+            isRunning: false,
+            intervalId: null,
+          },
+        },
+      };
+    });
+  },
+
+  resetTimer: (timerId, initialMinutes, initialSeconds) => {
+    set(state => {
+      const timer = state.timers[timerId];
+      if (timer?.intervalId) {
+        clearInterval(timer.intervalId);
+      }
+      return {
+        timers: {
+          ...state.timers,
+          [timerId]: {
+            time: {
+              minutes: parseInt(initialMinutes),
+              seconds: parseInt(initialSeconds),
+            },
+            isRunning: false,
+            intervalId: null,
+          },
+        },
       };
     });
   },

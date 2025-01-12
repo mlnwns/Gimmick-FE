@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import CurrentFire from '../components/detail/CurrentFire';
 import CircularProgress from '../components/detail/CircularProgress';
 import Header from '../components/common/Header';
@@ -20,18 +20,29 @@ const DetailColor = color => {
 const DetailPage = () => {
   const route = useRoute();
   const {timer} = route.params || {};
-  const {time, isRunning, startTimer, stopTimer, resetTimer} = useTimerStore(
-    state => state,
-  );
+  const timerStore = useTimerStore();
+  const currentTimer = useTimerStore(state => state.timers[timer.id]);
   const detailColor = DetailColor(timer.timerColor);
 
+  useEffect(() => {
+    if (!currentTimer) {
+      timerStore.initTimer(timer.id, timer.totalMinutes, timer.totalSeconds);
+    }
+  }, [timer.id]);
+
   const handleTimerToggle = () => {
-    if (isRunning) {
-      stopTimer();
+    if (currentTimer?.isRunning) {
+      timerStore.stopTimer(timer.id);
     } else {
-      startTimer();
+      timerStore.startTimer(timer.id);
     }
   };
+
+  const handleReset = () => {
+    timerStore.resetTimer(timer.id, timer.totalMinutes, timer.totalSeconds);
+  };
+
+  if (!currentTimer) return null;
 
   return (
     <DetailLayout>
@@ -42,11 +53,11 @@ const DetailPage = () => {
         <CircularProgress icon={timer.icon} color={detailColor} />
         <CurrentFire />
         <TimerDisplay weight="semi-bold">
-          {String(time.minutes).padStart(2, '0')}:
-          {String(time.seconds).padStart(2, '0')}
+          {String(currentTimer.time.minutes).padStart(2, '0')}:
+          {String(currentTimer.time.seconds).padStart(2, '0')}
         </TimerDisplay>
         <ButtonContainer>
-          <TouchableWithoutFeedback onPress={resetTimer}>
+          <TouchableWithoutFeedback onPress={handleReset}>
             <ButtonWrapper color={detailColor}>
               <ResetButtonImage
                 source={require('../assets/images/detail/reset-icon.png')}
@@ -57,9 +68,9 @@ const DetailPage = () => {
             <ButtonWrapper color={detailColor}>
               <StartButtonImage
                 source={
-                  isRunning
-                    ? require('../assets/images/detail/stop-icon.png') // 타이머 실행 중이면 stop-icon
-                    : require('../assets/images/detail/start-icon.png') // 타이머 멈춤이면 start-icon
+                  currentTimer.isRunning
+                    ? require('../assets/images/detail/stop-icon.png')
+                    : require('../assets/images/detail/start-icon.png')
                 }
               />
             </ButtonWrapper>
@@ -78,7 +89,6 @@ const DetailPage = () => {
 
 export default DetailPage;
 
-// Layout 스타일 정의
 const DetailLayout = styled.View`
   height: 100%;
 `;

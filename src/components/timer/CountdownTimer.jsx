@@ -5,20 +5,27 @@ import {Platform, TouchableWithoutFeedback, Alert} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import useTimerStore from '../../store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useEffect} from 'react';
+
 const CountdownTimer = ({timer}) => {
   const navigation = useNavigation();
-  const {time} = useTimerStore(state => state);
+  const timerStore = useTimerStore();
+  const currentTimer = useTimerStore(state => state.timers[timer.id]);
 
-  // 타이머 삭제 함수 선택한 타이머의 id와 일치하는 데이터를 제거한 리스트를 반환 후 저장
+  useEffect(() => {
+    timerStore.initTimer(timer.id, timer.totalMinutes, timer.totalSeconds);
+    return () => {
+      timerStore.stopTimer(timer.id);
+    };
+  }, [timer.id]);
+
   const deleteTimerData = async id => {
     try {
       const storedTimers = await AsyncStorage.getItem('timers');
       const parsedTimers = storedTimers ? JSON.parse(storedTimers) : [];
-
       const updatedTimers = parsedTimers.filter(
         parsedTimer => parsedTimer.id !== id,
       );
-
       await AsyncStorage.setItem('timers', JSON.stringify(updatedTimers));
       Alert.alert('삭제 완료', '타이머가 성공적으로 삭제되었습니다.');
       navigation.navigate('Refresh', {animation: 'none'});
@@ -45,11 +52,7 @@ const CountdownTimer = ({timer}) => {
 
   return (
     <TouchableWithoutFeedback
-      onPress={() =>
-        navigation.navigate('Detail', {
-          timer,
-        })
-      }
+      onPress={() => navigation.navigate('Detail', {timer})}
       onLongPress={handleLongPress}>
       <TimerContainer color={timer.timerColor}>
         <TimerHeaderWrapper>
@@ -62,8 +65,11 @@ const CountdownTimer = ({timer}) => {
         </TimerHeaderWrapper>
         <FoodTitleText weight="semi-bold">{timer.timerName}</FoodTitleText>
         <TimerText weight="bold">
-          {String(time.minutes).padStart(2, '0')}:
-          {String(time.seconds).padStart(2, '0')}
+          {currentTimer
+            ? `${String(currentTimer.time.minutes).padStart(2, '0')}:${String(
+                currentTimer.time.seconds,
+              ).padStart(2, '0')}`
+            : '00:00'}
         </TimerText>
       </TimerContainer>
     </TouchableWithoutFeedback>
