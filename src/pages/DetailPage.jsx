@@ -26,7 +26,12 @@ const DetailPage = () => {
 
   useEffect(() => {
     if (!currentTimer) {
-      timerStore.initTimer(timer.id, timer.totalMinutes, timer.totalSeconds);
+      timerStore.initTimer(
+        timer.id,
+        timer.detailTimerData[0].minutes,
+        timer.detailTimerData[0].seconds,
+        timer.detailTimerData,
+      );
     }
   }, [timer.id]);
 
@@ -39,25 +44,16 @@ const DetailPage = () => {
   };
 
   const handleReset = () => {
-    timerStore.resetTimer(timer.id, timer.totalMinutes, timer.totalSeconds);
+    timerStore.resetTimer(
+      timer.id,
+      timer.detailTimerData[0].minutes,
+      timer.detailTimerData[0].seconds,
+    );
   };
 
   const getCurrentFireData = () => {
     if (!currentTimer) return '';
-
-    let totalTime = 0;
-    const currentTime =
-      currentTimer.time.minutes * 60 + currentTimer.time.seconds;
-
-    for (let i = timer.detailTimerData.length - 1; i >= 0; i--) {
-      const step = timer.detailTimerData[i];
-      totalTime += parseInt(step.minutes) * 60 + parseInt(step.seconds);
-      if (currentTime <= totalTime) {
-        return step.fireData;
-      }
-    }
-
-    return timer.detailTimerData[0].fireData;
+    return timer.detailTimerData[currentTimer.currentStepIndex].fireData;
   };
 
   if (!currentTimer) return null;
