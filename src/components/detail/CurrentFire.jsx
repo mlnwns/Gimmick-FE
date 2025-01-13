@@ -3,11 +3,11 @@ import {scale} from 'react-native-size-matters';
 import CustomText from '../CustomText';
 import styled from 'styled-components/native';
 
-const CurrentFire = () => {
+const CurrentFire = ({fireData}) => {
   return (
     <CurrentFireContainer>
       <FireWrapper>
-        <FireText weight="bold">약불</FireText>
+        <FireText weight="bold">{fireData}</FireText>
       </FireWrapper>
     </CurrentFireContainer>
   );
