@@ -42,6 +42,24 @@ const DetailPage = () => {
     timerStore.resetTimer(timer.id, timer.totalMinutes, timer.totalSeconds);
   };
 
+  const getCurrentFireData = () => {
+    if (!currentTimer) return '';
+
+    let totalTime = 0;
+    const currentTime =
+      currentTimer.time.minutes * 60 + currentTimer.time.seconds;
+
+    for (let i = timer.detailTimerData.length - 1; i >= 0; i--) {
+      const step = timer.detailTimerData[i];
+      totalTime += parseInt(step.minutes) * 60 + parseInt(step.seconds);
+      if (currentTime <= totalTime) {
+        return step.fireData;
+      }
+    }
+
+    return timer.detailTimerData[0].fireData;
+  };
+
   if (!currentTimer) return null;
 
   return (
@@ -51,7 +69,7 @@ const DetailPage = () => {
       </HeaderWrapper>
       <ContentContainer>
         <CircularProgress icon={timer.icon} color={detailColor} />
-        <CurrentFire />
+        <CurrentFire fireData={getCurrentFireData()} />
         <TimerDisplay weight="semi-bold">
           {String(currentTimer.time.minutes).padStart(2, '0')}:
           {String(currentTimer.time.seconds).padStart(2, '0')}
@@ -86,8 +104,6 @@ const DetailPage = () => {
     </DetailLayout>
   );
 };
-
-export default DetailPage;
 
 const DetailLayout = styled.View`
   height: 100%;
@@ -152,3 +168,5 @@ const SwifeText = styled(CustomText)`
   color: #6c7386;
   font-size: ${scale(15)}px;
 `;
+
+export default DetailPage;
