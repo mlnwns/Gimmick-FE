@@ -44,11 +44,7 @@ const DetailPage = () => {
   };
 
   const handleReset = () => {
-    timerStore.resetTimer(
-      timer.id,
-      timer.detailTimerData[0].minutes,
-      timer.detailTimerData[0].seconds,
-    );
+    timerStore.resetTimer(timer.id, timer.totalMinutes, timer.totalSeconds);
   };
 
   const getCurrentFireData = () => {
