@@ -41,7 +41,6 @@ const MainPage = () => {
       console.log('유저정보 저장 완료');
     });
 
-    // 저장된 데이터를 AsyncStorage에서 가져오기
     AsyncStorage.getItem('timers', (err, result) => {
       const storedData = JSON.parse(result);
       if (storedData) {
@@ -72,8 +71,6 @@ const MainPage = () => {
     </MainContainer>
   );
 };
-
-// ... styled components 코드는 동일 ...
 
 export default MainPage;
 

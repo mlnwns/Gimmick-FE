@@ -13,7 +13,12 @@ const CountdownTimer = ({timer}) => {
   const currentTimer = useTimerStore(state => state.timers[timer.id]);
 
   useEffect(() => {
-    timerStore.initTimer(timer.id, timer.totalMinutes, timer.totalSeconds);
+    timerStore.initTimer(
+      timer.id,
+      timer.totalMinutes,
+      timer.totalSeconds,
+      timer.detailTimerData,
+    );
     return () => {
       timerStore.stopTimer(timer.id);
     };
@@ -66,9 +71,10 @@ const CountdownTimer = ({timer}) => {
         <FoodTitleText weight="semi-bold">{timer.timerName}</FoodTitleText>
         <TimerText weight="bold">
           {currentTimer
-            ? `${String(currentTimer.time.minutes).padStart(2, '0')}:${String(
-                currentTimer.time.seconds,
-              ).padStart(2, '0')}`
+            ? `${String(currentTimer.totalTime.minutes).padStart(
+                2,
+                '0',
+              )}:${String(currentTimer.totalTime.seconds).padStart(2, '0')}`
             : '00:00'}
         </TimerText>
       </TimerContainer>

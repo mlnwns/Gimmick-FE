@@ -3,10 +3,23 @@ import {scale} from 'react-native-size-matters';
 import CustomText from '../CustomText';
 import styled from 'styled-components/native';
 
+const getFireColor = fireData => {
+  switch (fireData) {
+    case '약불':
+      return '#FFA034';
+    case '중불':
+      return '#F69375';
+    case '강불':
+      return '#FB4216';
+    default:
+      return '#FFA034';
+  }
+};
+
 const CurrentFire = ({fireData}) => {
   return (
     <CurrentFireContainer>
-      <FireWrapper>
+      <FireWrapper fireData={fireData}>
         <FireText weight="bold">{fireData}</FireText>
       </FireWrapper>
     </CurrentFireContainer>
@@ -27,7 +40,7 @@ const FireText = styled(CustomText)`
 `;
 
 const FireWrapper = styled.View`
-  background-color: #ffa034;
+  background-color: ${props => getFireColor(props.fireData)};
   padding: ${scale(5)}px ${scale(23)}px;
   border-radius: ${scale(11)}px;
 `;
