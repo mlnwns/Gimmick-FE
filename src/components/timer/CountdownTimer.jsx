@@ -7,6 +7,14 @@ import useTimerStore from '../../store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useEffect} from 'react';
 
+const DetailColor = color => {
+  if (color === '#FBDF60') return '#FFC15B';
+  if (color === '#F6DBB7') return '#E9B97E';
+  if (color === '#FFC15B') return '#FFB347';
+  if (color === '#C8E7A7') return '#93C572';
+  if (color === '#FCC4C4') return '#F4A7A3';
+};
+
 const CountdownTimer = ({timer}) => {
   const navigation = useNavigation();
   const timerStore = useTimerStore();
@@ -23,6 +31,14 @@ const CountdownTimer = ({timer}) => {
       timerStore.stopTimer(timer.id);
     };
   }, [timer.id]);
+
+  const calculateProgress = () => {
+    if (!currentTimer) return 0;
+    const totalSeconds =
+      parseInt(timer.totalMinutes) * 60 + parseInt(timer.totalSeconds);
+    const remainingSeconds = currentTimer.remainingTotalSeconds;
+    return 1 - remainingSeconds / totalSeconds;
+  };
 
   const deleteTimerData = async id => {
     try {
@@ -55,41 +71,72 @@ const CountdownTimer = ({timer}) => {
     );
   };
 
+  const progress = calculateProgress();
+  const darkerColor = DetailColor(timer.timerColor);
+
   return (
     <TouchableWithoutFeedback
       onPress={() => navigation.navigate('Detail', {timer})}
       onLongPress={handleLongPress}>
-      <TimerContainer color={timer.timerColor}>
-        <TimerHeaderWrapper>
-          <IconboxWrapper>
-            <IconView>{timer.icon}</IconView>
-          </IconboxWrapper>
-          <EnterImage
-            source={require('../../assets/images/timerBox/enter-arrow.png')}
-          />
-        </TimerHeaderWrapper>
-        <FoodTitleText weight="semi-bold">{timer.timerName}</FoodTitleText>
-        <TimerText weight="bold">
-          {currentTimer
-            ? `${String(currentTimer.totalTime.minutes).padStart(
-                2,
-                '0',
-              )}:${String(currentTimer.totalTime.seconds).padStart(2, '0')}`
-            : '00:00'}
-        </TimerText>
+      <TimerContainer>
+        <BackgroundView color={timer.timerColor} />
+        <ProgressView
+          color={darkerColor}
+          style={{
+            position: 'absolute',
+            right: 0,
+            width: `${progress * 100}%`,
+            height: '100%',
+            borderRadius: scale(13),
+          }}
+        />
+        <ContentWrapper>
+          <TimerHeaderWrapper>
+            <IconboxWrapper>
+              <IconView>{timer.icon}</IconView>
+            </IconboxWrapper>
+            <EnterImage
+              source={require('../../assets/images/timerBox/enter-arrow.png')}
+            />
+          </TimerHeaderWrapper>
+          <FoodTitleText weight="semi-bold">{timer.timerName}</FoodTitleText>
+          <TimerText weight="bold">
+            {currentTimer
+              ? `${String(currentTimer.totalTime.minutes).padStart(
+                  2,
+                  '0',
+                )}:${String(currentTimer.totalTime.seconds).padStart(2, '0')}`
+              : '00:00'}
+          </TimerText>
+        </ContentWrapper>
       </TimerContainer>
     </TouchableWithoutFeedback>
   );
 };
 
-export default CountdownTimer;
-
 const TimerContainer = styled.View`
   width: ${scale(140)}px;
   height: ${scale(134.7)}px;
-  background-color: ${props => props.color || '#fbdf60'};
   border-radius: ${scale(13)}px;
+  overflow: hidden;
+  position: relative;
+`;
+
+const BackgroundView = styled.View`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: ${props => props.color};
+`;
+
+const ProgressView = styled.View`
+  position: absolute;
+  background-color: ${props => props.color};
+`;
+
+const ContentWrapper = styled.View`
   padding: ${scale(15)}px;
+  z-index: 1;
 `;
 
 const TimerHeaderWrapper = styled.View`
@@ -128,3 +175,5 @@ const EnterImage = styled.Image`
   width: 15px;
   height: 25px;
 `;
+
+export default CountdownTimer;
