@@ -87,7 +87,8 @@ const CountdownTimer = ({timer}) => {
             right: 0,
             width: `${progress * 100}%`,
             height: '100%',
-            borderRadius: scale(13),
+            borderTopRightRadius: scale(13),
+            borderBottomRightRadius: scale(13),
           }}
         />
         <ContentWrapper>
