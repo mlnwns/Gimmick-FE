@@ -49,8 +49,10 @@ const useTimerStore = create(set => ({
         set(state => {
           const currentTimer = state.timers[timerId];
           const {minutes, seconds} = currentTimer.time;
-          const newRemainingTotalSeconds =
-            currentTimer.remainingTotalSeconds - 1;
+          const newRemainingTotalSeconds = Math.max(
+            currentTimer.remainingTotalSeconds - 1,
+            0,
+          );
 
           if (minutes === 0 && seconds === 0) {
             if (
@@ -81,12 +83,9 @@ const useTimerStore = create(set => ({
             } else {
               clearInterval(currentTimer.intervalId);
               const initialTotalSeconds = currentTimer.detailTimerData.reduce(
-                (total, step) => {
-                  return (
-                    total +
-                    (parseInt(step.minutes) * 60 + parseInt(step.seconds))
-                  );
-                },
+                (total, step) =>
+                  total +
+                  (parseInt(step.minutes) * 60 + parseInt(step.seconds)),
                 0,
               );
 
