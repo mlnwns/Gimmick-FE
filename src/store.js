@@ -80,6 +80,16 @@ const useTimerStore = create(set => ({
               };
             } else {
               clearInterval(currentTimer.intervalId);
+              const initialTotalSeconds = currentTimer.detailTimerData.reduce(
+                (total, step) => {
+                  return (
+                    total +
+                    (parseInt(step.minutes) * 60 + parseInt(step.seconds))
+                  );
+                },
+                0,
+              );
+
               return {
                 timers: {
                   ...state.timers,
@@ -87,10 +97,19 @@ const useTimerStore = create(set => ({
                     ...currentTimer,
                     isRunning: false,
                     intervalId: null,
-                    remainingTotalSeconds: 0,
+                    currentStepIndex: 0,
+                    time: {
+                      minutes: parseInt(
+                        currentTimer.detailTimerData[0].minutes,
+                      ),
+                      seconds: parseInt(
+                        currentTimer.detailTimerData[0].seconds,
+                      ),
+                    },
+                    remainingTotalSeconds: initialTotalSeconds,
                     totalTime: {
-                      minutes: 0,
-                      seconds: 0,
+                      minutes: Math.floor(initialTotalSeconds / 60),
+                      seconds: initialTotalSeconds % 60,
                     },
                   },
                 },
