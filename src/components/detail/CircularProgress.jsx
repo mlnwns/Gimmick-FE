@@ -7,7 +7,6 @@ const CircularProgress = ({icon, color, progress}) => {
   const radius = scale(110);
   const smallCircleRadius = scale(6.5);
   const circleCount = 8;
-  const angleStep = (2 * Math.PI) / circleCount;
   const strokeWidth = scale(5);
 
   const circumference = 2 * Math.PI * radius;
@@ -24,7 +23,7 @@ const CircularProgress = ({icon, color, progress}) => {
       };
     }
 
-    const normalizedIndex = (index + 6) % circleCount;
+    const normalizedIndex = (index + 7) % circleCount;
     const circleThreshold = 1 - (normalizedIndex + 1) / circleCount;
     const isActive = progress <= circleThreshold;
 
