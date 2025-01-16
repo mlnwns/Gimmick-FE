@@ -25,7 +25,7 @@ const DetailPage = () => {
   const detailColor = DetailColor(timer.timerColor);
 
   useEffect(() => {
-    if (!currentTimer) {
+    if (!currentTimer && !timerStore.timers[timer.id]) {
       timerStore.initTimer(
         timer.id,
         timer.detailTimerData[0].minutes,
@@ -41,6 +41,13 @@ const DetailPage = () => {
     } else {
       timerStore.startTimer(timer.id);
     }
+  };
+
+  const calculateProgress = () => {
+    if (!currentTimer) return 1;
+    const totalSeconds = timer.totalMinutes * 60 + parseInt(timer.totalSeconds);
+    const remainingSeconds = currentTimer.remainingTotalSeconds;
+    return remainingSeconds / totalSeconds;
   };
 
   const handleReset = () => {
@@ -60,7 +67,11 @@ const DetailPage = () => {
         <Header type="detail" title={timer.timerName} timer={timer} />
       </HeaderWrapper>
       <ContentContainer>
-        <CircularProgress icon={timer.icon} color={detailColor} />
+        <CircularProgress
+          icon={timer.icon}
+          color={detailColor}
+          progress={calculateProgress()}
+        />
         <CurrentFire fireData={getCurrentFireData()} />
         <TimerDisplay weight="semi-bold">
           {String(currentTimer.time.minutes).padStart(2, '0')}:

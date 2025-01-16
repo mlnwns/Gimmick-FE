@@ -1,4 +1,3 @@
-import {useState} from 'react';
 import {scale} from 'react-native-size-matters';
 import styled from 'styled-components/native';
 
@@ -22,7 +21,8 @@ const Input = styled.TextInput`
   width: 100%;
   border-radius: ${scale(5)}px;
   text-align: left;
-  font-size: ${scale(12)}px;
+  font-size: ${scale(13)}px;
+  padding-left: ${scale(12)}px;
 `;
 
 export default InputComponent;

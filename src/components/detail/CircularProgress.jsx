@@ -1,57 +1,124 @@
 import React from 'react';
-import Svg, {Circle} from 'react-native-svg';
+import Svg, {Circle, Defs, Mask} from 'react-native-svg';
 import {scale} from 'react-native-size-matters';
 import styled from 'styled-components/native';
 
-const CircularProgress = ({icon, color}) => {
-  const radius = scale(110); // 큰 원의 반지름
-  const smallCircleRadius = scale(6.5); // 작은 원의 반지름
-  const circleCount = 8; // 작은 원의 개수
-  const angleStep = (2 * Math.PI) / circleCount; // 각도 계산
+const CircularProgress = ({icon, color, progress}) => {
+  const radius = scale(110);
+  const smallCircleRadius = scale(6.5);
+  const circleCount = 8;
+  const strokeWidth = scale(5);
 
-  const circles = Array.from({length: circleCount}).map((_, index) => {
-    const angle = index * angleStep;
-    const x = radius + radius * Math.cos(angle); // x 좌표
-    const y = radius + radius * Math.sin(angle); // y 좌표
-    return (
-      <Circle key={index} cx={x} cy={y} r={smallCircleRadius} fill={color} />
-    );
-  });
+  const circumference = 2 * Math.PI * radius;
+  const dashOffset = circumference * progress;
+
+  const getSmallCircleStyle = index => {
+    if (progress === 1) {
+      return {
+        fill: 'transparent',
+        stroke: color,
+        strokeWidth: 1.5,
+        strokeOpacity: 0.64,
+        fillOpacity: 0.64,
+      };
+    }
+
+    const normalizedIndex = (index + 7) % circleCount;
+    const circleThreshold = 1 - (normalizedIndex + 1) / circleCount;
+    const isActive = progress <= circleThreshold;
+
+    return {
+      fill: isActive ? color : 'transparent',
+      stroke: color,
+      strokeWidth: 1.5,
+      strokeOpacity: 0.64,
+      fillOpacity: 0.64,
+    };
+  };
+
+  const smallCirclePositions = Array.from({length: circleCount}).map(
+    (_, index) => {
+      const startAngle = -Math.PI / 2;
+      const angle = startAngle + (index * 2 * Math.PI) / circleCount;
+      return {
+        x: radius + radius * Math.cos(angle),
+        y: radius + radius * Math.sin(angle),
+      };
+    },
+  );
 
   return (
     <Container>
-      {/* SVG 크기를 크게 설정하고 viewBox로 중앙 맞추기 */}
       <Svg
-        height={radius * 2.2} // 크기를 radius * 2로 설정
-        width={radius * 2.2} // 크기를 radius * 2로 설정
+        height={radius * 2.2}
+        width={radius * 2.2}
         viewBox={`-${radius * 0.1} -${radius * 0.1} ${radius * 2.2} ${
           radius * 2.2
-        }`} // 여백을 추가하여 잘리지 않도록 설정
-      >
-        {/* 큰 원: 중앙에 위치하게 설정 */}
+        }`}>
+        <Defs>
+          <Mask id="circleMask">
+            <Circle
+              cx={radius}
+              cy={radius}
+              r={radius + strokeWidth / 2}
+              fill="white"
+            />
+            {smallCirclePositions.map((pos, index) => (
+              <Circle
+                key={`mask-${index}`}
+                cx={pos.x}
+                cy={pos.y}
+                r={smallCircleRadius + strokeWidth / 2}
+                fill="black"
+              />
+            ))}
+          </Mask>
+        </Defs>
+
         <Circle
-          cx={radius} // 큰 원의 중심을 SVG 중앙에 맞추기
-          cy={radius} // 큰 원의 중심을 SVG 중앙에 맞추기
+          cx={radius}
+          cy={radius}
           r={radius}
           stroke={color}
-          opacity={'64%'}
-          strokeWidth="3"
+          strokeOpacity={0.3}
+          strokeWidth={strokeWidth}
           fill="none"
+          mask="url(#circleMask)"
         />
-        {/* 작은 원들: 원의 위치는 그대로 */}
-        {circles}
+        <Circle
+          cx={radius}
+          cy={radius}
+          r={radius}
+          stroke={color}
+          strokeOpacity={0.64}
+          strokeWidth={strokeWidth}
+          fill="none"
+          strokeDasharray={circumference}
+          strokeDashoffset={dashOffset}
+          strokeLinecap="round"
+          transform={`rotate(-90 ${radius} ${radius})`}
+          mask="url(#circleMask)"
+        />
+
+        {smallCirclePositions.map((pos, index) => {
+          const style = getSmallCircleStyle(index);
+          return (
+            <Circle
+              key={`circle-${index}`}
+              cx={pos.x}
+              cy={pos.y}
+              r={smallCircleRadius}
+              {...style}
+            />
+          );
+        })}
       </Svg>
       <ImageContainer>
         <FoodText>{icon}</FoodText>
-        {/* <FoodImage
-          source={require('../../assets/images/detail/food-image.png')}
-        /> */}
       </ImageContainer>
     </Container>
   );
 };
-
-export default CircularProgress;
 
 const Container = styled.View`
   justify-content: center;
@@ -70,7 +137,4 @@ const FoodText = styled.Text`
   font-size: 125px;
 `;
 
-const FoodImage = styled.Image`
-  width: ${scale(140)}px;
-  height: ${scale(140)}px;
-`;
+export default CircularProgress;

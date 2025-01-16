@@ -21,15 +21,14 @@ const CountdownTimer = ({timer, onTimerClick}) => {
   const currentTimer = useTimerStore(state => state.timers[timer.id]);
 
   useEffect(() => {
-    timerStore.initTimer(
-      timer.id,
-      timer.totalMinutes,
-      timer.totalSeconds,
-      timer.detailTimerData,
-    );
-    return () => {
-      timerStore.stopTimer(timer.id);
-    };
+    if (!currentTimer) {
+      timerStore.initTimer(
+        timer.id,
+        timer.totalMinutes,
+        timer.totalSeconds,
+        timer.detailTimerData,
+      );
+    }
   }, [timer.id]);
 
   const calculateProgress = () => {
