@@ -1,5 +1,5 @@
 import React from 'react';
-import Svg, {Circle} from 'react-native-svg';
+import Svg, {Circle, Defs, Mask} from 'react-native-svg';
 import {scale} from 'react-native-size-matters';
 import styled from 'styled-components/native';
 
@@ -8,35 +8,45 @@ const CircularProgress = ({icon, color, progress}) => {
   const smallCircleRadius = scale(6.5);
   const circleCount = 8;
   const angleStep = (2 * Math.PI) / circleCount;
+  const strokeWidth = scale(5);
 
-  // 원형 프로그레스 계산
   const circumference = 2 * Math.PI * radius;
-  const dashOffset = circumference * progress; // progress가 1에서 0으로 감소
+  const dashOffset = circumference * progress;
 
-  // 작은 원들의 활성화 상태 계산
-  const getSmallCircleOpacity = index => {
-    // 각 작은 원의 위치에 해당하는 progress 값 계산 (0~1)
-    const circleThreshold = 1 - (index + 1) / circleCount;
-    // progress가 해당 원의 threshold보다 작으면 흐리게 표시
-    return progress <= circleThreshold ? 0.3 : 1;
+  const getSmallCircleStyle = index => {
+    if (progress === 1) {
+      return {
+        fill: 'transparent',
+        stroke: color,
+        strokeWidth: 1.5,
+        strokeOpacity: 0.64,
+        fillOpacity: 0.64,
+      };
+    }
+
+    const normalizedIndex = (index + 6) % circleCount;
+    const circleThreshold = 1 - (normalizedIndex + 1) / circleCount;
+    const isActive = progress <= circleThreshold;
+
+    return {
+      fill: isActive ? color : 'transparent',
+      stroke: color,
+      strokeWidth: 1.5,
+      strokeOpacity: 0.64,
+      fillOpacity: 0.64,
+    };
   };
 
-  const circles = Array.from({length: circleCount}).map((_, index) => {
-    const angle = index * angleStep;
-    const x = radius + radius * Math.cos(angle);
-    const y = radius + radius * Math.sin(angle);
-
-    return (
-      <Circle
-        key={index}
-        cx={x}
-        cy={y}
-        r={smallCircleRadius}
-        fill={color}
-        opacity={getSmallCircleOpacity(index)}
-      />
-    );
-  });
+  const smallCirclePositions = Array.from({length: circleCount}).map(
+    (_, index) => {
+      const startAngle = -Math.PI / 2;
+      const angle = startAngle + (index * 2 * Math.PI) / circleCount;
+      return {
+        x: radius + radius * Math.cos(angle),
+        y: radius + radius * Math.sin(angle),
+      };
+    },
+  );
 
   return (
     <Container>
@@ -46,31 +56,63 @@ const CircularProgress = ({icon, color, progress}) => {
         viewBox={`-${radius * 0.1} -${radius * 0.1} ${radius * 2.2} ${
           radius * 2.2
         }`}>
-        {/* 배경 원 */}
+        <Defs>
+          <Mask id="circleMask">
+            <Circle
+              cx={radius}
+              cy={radius}
+              r={radius + strokeWidth / 2}
+              fill="white"
+            />
+            {smallCirclePositions.map((pos, index) => (
+              <Circle
+                key={`mask-${index}`}
+                cx={pos.x}
+                cy={pos.y}
+                r={smallCircleRadius + strokeWidth / 2}
+                fill="black"
+              />
+            ))}
+          </Mask>
+        </Defs>
+
         <Circle
           cx={radius}
           cy={radius}
           r={radius}
           stroke={color}
-          opacity={0.3}
-          strokeWidth="3"
+          strokeOpacity={0.3}
+          strokeWidth={strokeWidth}
           fill="none"
+          mask="url(#circleMask)"
         />
-        {/* 프로그레스 원 */}
         <Circle
           cx={radius}
           cy={radius}
           r={radius}
           stroke={color}
-          opacity={0.64}
-          strokeWidth="3"
+          strokeOpacity={0.64}
+          strokeWidth={strokeWidth}
           fill="none"
           strokeDasharray={circumference}
           strokeDashoffset={dashOffset}
           strokeLinecap="round"
-          transform={`rotate(-90 ${radius} ${radius})`} // 시작점을 12시 방향으로
+          transform={`rotate(-90 ${radius} ${radius})`}
+          mask="url(#circleMask)"
         />
-        {circles}
+
+        {smallCirclePositions.map((pos, index) => {
+          const style = getSmallCircleStyle(index);
+          return (
+            <Circle
+              key={`circle-${index}`}
+              cx={pos.x}
+              cy={pos.y}
+              r={smallCircleRadius}
+              {...style}
+            />
+          );
+        })}
       </Svg>
       <ImageContainer>
         <FoodText>{icon}</FoodText>
@@ -78,8 +120,6 @@ const CircularProgress = ({icon, color, progress}) => {
     </Container>
   );
 };
-
-export default CircularProgress;
 
 const Container = styled.View`
   justify-content: center;
@@ -98,7 +138,4 @@ const FoodText = styled.Text`
   font-size: 125px;
 `;
 
-const FoodImage = styled.Image`
-  width: ${scale(140)}px;
-  height: ${scale(140)}px;
-`;
+export default CircularProgress;
