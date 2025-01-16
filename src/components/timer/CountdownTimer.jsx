@@ -22,7 +22,6 @@ const CountdownTimer = ({timer, onTimerClick}) => {
 
   useEffect(() => {
     if (!currentTimer) {
-      // 타이머가 없을 때만 초기화
       timerStore.initTimer(
         timer.id,
         timer.totalMinutes,
@@ -30,7 +29,6 @@ const CountdownTimer = ({timer, onTimerClick}) => {
         timer.detailTimerData,
       );
     }
-    // cleanup 함수 제거
   }, [timer.id]);
 
   const calculateProgress = () => {
