@@ -25,7 +25,21 @@ const MainPage = () => {
     }
   };
 
-  // 첫 유저 판별 로직
+  const handleTimerClick = async clickedTimer => {
+    try {
+      const updatedTimers = [...timers];
+      const timerIndex = updatedTimers.findIndex(t => t.id === clickedTimer.id);
+      if (timerIndex > -1) {
+        const [timer] = updatedTimers.splice(timerIndex, 1);
+        updatedTimers.unshift(timer);
+        setTimers(updatedTimers);
+        await AsyncStorage.setItem('timers', JSON.stringify(updatedTimers));
+      }
+    } catch (error) {
+      console.error('타이머 순서 업데이트 실패:', error);
+    }
+  };
+
   useEffect(() => {
     const initialize = async () => {
       try {
@@ -43,7 +57,6 @@ const MainPage = () => {
     initialize();
   }, []);
 
-  // 새로고침되어 새로 추가된 타이머 ui가 보이도록
   useFocusEffect(
     React.useCallback(() => {
       loadData();
@@ -60,7 +73,7 @@ const MainPage = () => {
           <TimersAndFoldersContainer>
             {timers.map((timer, index) => (
               <React.Fragment key={index}>
-                <CountdownTimer timer={timer} />
+                <CountdownTimer timer={timer} onTimerClick={handleTimerClick} />
               </React.Fragment>
             ))}
             {folders.map(folder => (

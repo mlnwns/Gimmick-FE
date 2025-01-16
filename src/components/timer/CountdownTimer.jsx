@@ -15,7 +15,7 @@ const DetailColor = color => {
   if (color === '#FCC4C4') return '#F4A7A3';
 };
 
-const CountdownTimer = ({timer}) => {
+const CountdownTimer = ({timer, onTimerClick}) => {
   const navigation = useNavigation();
   const timerStore = useTimerStore();
   const currentTimer = useTimerStore(state => state.timers[timer.id]);
@@ -71,12 +71,19 @@ const CountdownTimer = ({timer}) => {
     );
   };
 
+  const handlePress = () => {
+    navigation.navigate('Detail', {timer});
+    setTimeout(() => {
+      onTimerClick(timer);
+    }, 1000);
+  };
+
   const progress = calculateProgress();
   const darkerColor = DetailColor(timer.timerColor);
 
   return (
     <TouchableWithoutFeedback
-      onPress={() => navigation.navigate('Detail', {timer})}
+      onPress={handlePress}
       onLongPress={handleLongPress}>
       <TimerContainer>
         <BackgroundView color={timer.timerColor} />
