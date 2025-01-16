@@ -21,15 +21,16 @@ const CountdownTimer = ({timer, onTimerClick}) => {
   const currentTimer = useTimerStore(state => state.timers[timer.id]);
 
   useEffect(() => {
-    timerStore.initTimer(
-      timer.id,
-      timer.totalMinutes,
-      timer.totalSeconds,
-      timer.detailTimerData,
-    );
-    return () => {
-      timerStore.stopTimer(timer.id);
-    };
+    if (!currentTimer) {
+      // 타이머가 없을 때만 초기화
+      timerStore.initTimer(
+        timer.id,
+        timer.totalMinutes,
+        timer.totalSeconds,
+        timer.detailTimerData,
+      );
+    }
+    // cleanup 함수 제거
   }, [timer.id]);
 
   const calculateProgress = () => {

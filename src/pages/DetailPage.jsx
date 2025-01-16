@@ -25,7 +25,7 @@ const DetailPage = () => {
   const detailColor = DetailColor(timer.timerColor);
 
   useEffect(() => {
-    if (!currentTimer) {
+    if (!currentTimer && !timerStore.timers[timer.id]) {
       timerStore.initTimer(
         timer.id,
         timer.detailTimerData[0].minutes,

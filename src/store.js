@@ -4,6 +4,12 @@ const useTimerStore = create(set => ({
   timers: {},
 
   initTimer: (timerId, initialMinutes, initialSeconds, detailTimerData) => {
+    set(state => {
+      if (state.timers[timerId] && state.timers[timerId].isRunning) {
+        return state;
+      }
+      return state;
+    });
     const defaultTimer = {
       minutes: initialMinutes,
       seconds: initialSeconds,
