@@ -43,6 +43,13 @@ const DetailPage = () => {
     }
   };
 
+  const calculateProgress = () => {
+    if (!currentTimer) return 1;
+    const totalSeconds = timer.totalMinutes * 60 + parseInt(timer.totalSeconds);
+    const remainingSeconds = currentTimer.remainingTotalSeconds;
+    return remainingSeconds / totalSeconds;
+  };
+
   const handleReset = () => {
     timerStore.resetTimer(timer.id, timer.totalMinutes, timer.totalSeconds);
   };
@@ -60,7 +67,11 @@ const DetailPage = () => {
         <Header type="detail" title={timer.timerName} timer={timer} />
       </HeaderWrapper>
       <ContentContainer>
-        <CircularProgress icon={timer.icon} color={detailColor} />
+        <CircularProgress
+          icon={timer.icon}
+          color={detailColor}
+          progress={calculateProgress()}
+        />
         <CurrentFire fireData={getCurrentFireData()} />
         <TimerDisplay weight="semi-bold">
           {String(currentTimer.time.minutes).padStart(2, '0')}:

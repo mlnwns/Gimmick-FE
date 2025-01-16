@@ -3,49 +3,77 @@ import Svg, {Circle} from 'react-native-svg';
 import {scale} from 'react-native-size-matters';
 import styled from 'styled-components/native';
 
-const CircularProgress = ({icon, color}) => {
-  const radius = scale(110); // 큰 원의 반지름
-  const smallCircleRadius = scale(6.5); // 작은 원의 반지름
-  const circleCount = 8; // 작은 원의 개수
-  const angleStep = (2 * Math.PI) / circleCount; // 각도 계산
+const CircularProgress = ({icon, color, progress}) => {
+  const radius = scale(110);
+  const smallCircleRadius = scale(6.5);
+  const circleCount = 8;
+  const angleStep = (2 * Math.PI) / circleCount;
+
+  // 원형 프로그레스 계산
+  const circumference = 2 * Math.PI * radius;
+  const dashOffset = circumference * progress; // progress가 1에서 0으로 감소
+
+  // 작은 원들의 활성화 상태 계산
+  const getSmallCircleOpacity = index => {
+    // 각 작은 원의 위치에 해당하는 progress 값 계산 (0~1)
+    const circleThreshold = 1 - (index + 1) / circleCount;
+    // progress가 해당 원의 threshold보다 작으면 흐리게 표시
+    return progress <= circleThreshold ? 0.3 : 1;
+  };
 
   const circles = Array.from({length: circleCount}).map((_, index) => {
     const angle = index * angleStep;
-    const x = radius + radius * Math.cos(angle); // x 좌표
-    const y = radius + radius * Math.sin(angle); // y 좌표
+    const x = radius + radius * Math.cos(angle);
+    const y = radius + radius * Math.sin(angle);
+
     return (
-      <Circle key={index} cx={x} cy={y} r={smallCircleRadius} fill={color} />
+      <Circle
+        key={index}
+        cx={x}
+        cy={y}
+        r={smallCircleRadius}
+        fill={color}
+        opacity={getSmallCircleOpacity(index)}
+      />
     );
   });
 
   return (
     <Container>
-      {/* SVG 크기를 크게 설정하고 viewBox로 중앙 맞추기 */}
       <Svg
-        height={radius * 2.2} // 크기를 radius * 2로 설정
-        width={radius * 2.2} // 크기를 radius * 2로 설정
+        height={radius * 2.2}
+        width={radius * 2.2}
         viewBox={`-${radius * 0.1} -${radius * 0.1} ${radius * 2.2} ${
           radius * 2.2
-        }`} // 여백을 추가하여 잘리지 않도록 설정
-      >
-        {/* 큰 원: 중앙에 위치하게 설정 */}
+        }`}>
+        {/* 배경 원 */}
         <Circle
-          cx={radius} // 큰 원의 중심을 SVG 중앙에 맞추기
-          cy={radius} // 큰 원의 중심을 SVG 중앙에 맞추기
+          cx={radius}
+          cy={radius}
           r={radius}
           stroke={color}
-          opacity={'64%'}
+          opacity={0.3}
           strokeWidth="3"
           fill="none"
         />
-        {/* 작은 원들: 원의 위치는 그대로 */}
+        {/* 프로그레스 원 */}
+        <Circle
+          cx={radius}
+          cy={radius}
+          r={radius}
+          stroke={color}
+          opacity={0.64}
+          strokeWidth="3"
+          fill="none"
+          strokeDasharray={circumference}
+          strokeDashoffset={dashOffset}
+          strokeLinecap="round"
+          transform={`rotate(-90 ${radius} ${radius})`} // 시작점을 12시 방향으로
+        />
         {circles}
       </Svg>
       <ImageContainer>
         <FoodText>{icon}</FoodText>
-        {/* <FoodImage
-          source={require('../../assets/images/detail/food-image.png')}
-        /> */}
       </ImageContainer>
     </Container>
   );
