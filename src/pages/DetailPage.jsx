@@ -156,7 +156,7 @@ const DetailPage = () => {
                 }
               />
               <SwifeText weight="semi-bold">
-                스와d이프하여 전체 정보 확인
+                스와이프하여 전체 정보 확인
               </SwifeText>
             </SwifeContainer>
           </DetailTimerContainer>
