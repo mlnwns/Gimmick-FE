@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
-import { Platform, Dimensions } from 'react-native';
+import { Dimensions } from 'react-native';
 import CurrentFire from '../components/detail/CurrentFire';
 import CurrentMemo from '../components/detail/CurrentMemo';
 import CircularProgress from '../components/detail/CircularProgress';
@@ -13,6 +13,7 @@ import {useRoute} from '@react-navigation/native';
 import {GestureDetector, Gesture} from 'react-native-gesture-handler';
 import Animated, {useSharedValue, withSpring, useAnimatedStyle, runOnJS} from 'react-native-reanimated';
 
+
 const DetailColor = color => {
   if (color === '#FBDF60') return '#FFC15B';
   if (color === '#F6DBB7') return '#E9B97E';
@@ -22,13 +23,15 @@ const DetailColor = color => {
 };
 
 
+
 const DetailPage = () => {
   const [isSwifeOpen, setSwifeOpen] =useState(false);
+
   const route = useRoute();
   const {timer} = route.params || {};
   const timerStore = useTimerStore();
   const currentTimer = useTimerStore(state => state.timers[timer.id]);
-  const currentTotalTimer = useTimerStore(state => state.timers[timer.id]);
+
 
   const detailColor = DetailColor(timer.timerColor);
 
@@ -76,32 +79,44 @@ const DetailPage = () => {
 
 
   const translateY = useSharedValue(0);
+  const [isGestureActive, setGestureActive] = useState(false);
 
   const panGesture = Gesture.Pan()
     .onUpdate((event) => {
-      if (event.translationY <= 0) {
+      if (isGestureActive) return;
+
+      if (!isSwifeOpen && event.translationY <= 0 && translateY.value > -350) {
         translateY.value = event.translationY;
       }
-    })
-    .onEnd(() => {
-     if (translateY.value <= 0 && translateY.value >= -350
-     ) {
-        runOnJS(setSwifeOpen)(false);
-        translateY.value = withSpring(0, { damping: 40, stiffness: 150 });
-      } else {
-        runOnJS(setSwifeOpen)(true);
-        translateY.value = withSpring(-350, { damping: 40, stiffness: 150 });
+      else if (isSwifeOpen && event.translationY < 0) {
+        translateY.value = -350 + event.translationY;
       }
+      
+    })
+    .onEnd((event) => {
+      runOnJS(setGestureActive)(true);
+      if (!isSwifeOpen) {
+        if (translateY.value < 0 && translateY.value > -350 && event.translationY < 0) {
+          runOnJS(setSwifeOpen)(true);
+          translateY.value = withSpring(-350, { damping: 40, stiffness: 150 });
+        } 
+      } else if (translateY.value <= -300) {
+          if (event.translationY > 0) {
+            runOnJS(setSwifeOpen)(false);
+            translateY.value = withSpring(0 , { damping: 40, stiffness: 150 });
+          }
+
+          if (event.translationY < 0 ) {
+            translateY.value = withSpring(-350, { damping: 40, stiffness: 150 });
+          }
+      }
+      runOnJS(setGestureActive)(false);
+
     });
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{translateY: translateY.value}],
   }));
-
-  const handleTextLayout = (event) => {
-    const { width } = event.nativeEvent.layout;
-    setTextWidth(width);
-  };
 
   const screenWidth = Dimensions.get('window').width;
 
