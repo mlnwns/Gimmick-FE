@@ -193,8 +193,9 @@ const DetailPage = () => {
               </ProgressIconContainer>
               <ProgressLine
                 color={detailColor}
-                width={screenWidth - scale(48)}
+                width={`${screenWidth - scale(48)}px`}
               />
+
               <MemoContainer>
                 <MemoText weight="semi-bold">메모 사항</MemoText>
                 <CurrentMemo memoData={getCurrentMemoData()} />
@@ -277,7 +278,7 @@ const SwifeText = styled(CustomText)`
 
 const SwipeContent = styled(Animated.View)`
   width: 100%;
-  height: ${scale(300)};
+  height: ${scale(300)}px;
   overflow: hidden;
   margin-top: ${scale(20)}px;
   align-items: center;
