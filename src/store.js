@@ -107,8 +107,8 @@ const useTimerStore = create(set => ({
             });
 
             if (
-              (currentTimer.currentStepIndex,
-              currentTimer.detailTimerData.length - 1)
+              currentTimer.currentStepIndex <
+              currentTimer.detailTimerData.length - 1
             ) {
               const nextIndex = currentTimer.currentStepIndex + 1;
               const nextStep = currentTimer.detailTimerData[nextIndex];
