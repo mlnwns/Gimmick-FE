@@ -37,7 +37,6 @@ const DetailTimer = ({
   const openTimeSelectModal = () => {
     setModalVisible(true);
   };
-
   return (
     <DetailTimerContainer>
       <BaseLayout>
@@ -76,13 +75,9 @@ const DetailTimer = ({
             }}
             placeholder="메모 작성"
             placeholderTextColor="#676767"
-            textAlign="center"
             multiline={true}
             numberOfLines={3}
-            style={{
-              textAlign: 'center',
-              textAlignVertical: 'center',
-            }}
+            isMemoEmpty={memoData.length === 0}
           />
         </MemoWrapper>
       </BaseLayout>
@@ -143,9 +138,8 @@ const MemoTextInput = styled(TextInput)`
   width: 100%;
   border-radius: ${scale(5)}px;
   border: 1px solid #d5d7d9;
-  text-align: center;
   font-size: ${scale(13)}px;
   font-family: 'Pretendard-Regular';
+  text-align: ${props => (props.isMemoEmpty === true ? 'center' : 'left')};
 `;
-
 export default DetailTimer;
