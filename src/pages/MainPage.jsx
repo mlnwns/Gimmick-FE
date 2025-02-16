@@ -22,6 +22,11 @@ const MainPage = () => {
       if (storedTimers) {
         setTimers(storedTimers);
       }
+
+      const storedFolders = await AppDataStorage.load('folders');
+      if (storedFolders) {
+        setFolders(storedFolders);
+      }
     } catch (error) {
       console.error('데이터 가져오기 실패:', error);
     }
@@ -78,7 +83,7 @@ const MainPage = () => {
               </React.Fragment>
             ))}
             {folders.map(folder => (
-              <CountdownFolder key={folder.id} />
+              <CountdownFolder key={folder.id} folder={folder} />
             ))}
           </TimersAndFoldersContainer>
         </CountdownTimerWrapper>
